@@ -1,14 +1,14 @@
 <?php
 
-	define('DIRECTORY_ICON','<img src="/images/folder-open.png" alt="" />');
-	define('INDENTATION','<img src="/images/indentation-blank.png" alt="" />');
-	define('FILE_ACROBAT_ICON','<img src="/images/page_white_acrobat.png" alt="" />');
-	define('FILE_PHP_ICON','<img src="/images/page_white_php.png" alt="" />');
-	define('FILE_IMAGE_ICON','<img src="/images/page_white_picture.png" alt="" />');
-	define('FILE_HTML_ICON','<img src="/images/page_white_world.png" alt="" />');
-	define('FILE_ZIP_ICON','<img src="/images/page_white_zip.png" alt="" />');
-	define('FILE_ICON','<img src="/images/folder-open.png" alt="" />');
-	define('DEFAULT_ICON','<img src="/images/page_white.png" alt="" />');
+	define('DIRECTORY_ICON','<img src="images/folder-open.png" alt="" />');
+	define('INDENTATION','<img src="images/indentation-blank.png" alt="" />');
+	define('FILE_ACROBAT_ICON','<img src="images/page_white_acrobat.png" alt="" />');
+	define('FILE_PHP_ICON','<img src="images/page_white_php.png" alt="" />');
+	define('FILE_IMAGE_ICON','<img src="images/page_white_picture.png" alt="" />');
+	define('FILE_HTML_ICON','<img src="images/page_white_world.png" alt="" />');
+	define('FILE_ZIP_ICON','<img src="images/page_white_zip.png" alt="" />');
+	define('FILE_ICON','<img src="images/folder-open.png" alt="" />');
+	define('DEFAULT_ICON','<img src="images/page_white.png" alt="" />');
 	
 	
 	class IconCollection {

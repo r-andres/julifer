@@ -8,7 +8,7 @@
 <th>vehiculo</th>
 <th>servicios</th>
 
-	<th><a href="javascript:doAction('FacturaForm','new','')"><img src="/images/add.png" /></a></th>
+	<th><a href="javascript:doAction('FacturaForm','new','')"><img src="images/add.png" /></a></th>
 <?php  
 	$currentTitle = "";
         $counter = 0;
@@ -23,8 +23,8 @@
 			<td class="<?=$class?>"><?=$factura->fecha?></td>
 
 <td class="<?=$class?>" >
-<img class="verVehiculo" id="verVehiculo_<?=$counter?>" src="/images/go-bottom.png" border="0" />
-<img class="ocultarVehiculo" id="ocultarVehiculo_<?=$counter?>" src="/images/go-top.png" border="0" />
+<img class="verVehiculo" id="verVehiculo_<?=$counter?>" src="images/go-bottom.png" border="0" />
+<img class="ocultarVehiculo" id="ocultarVehiculo_<?=$counter?>" src="images/go-top.png" border="0" />
 <div class="vehiculoDetalles" id="vehiculoDetalles_<?=$counter?>">
 </div>
 <input type="hidden" id="vehiculo_<?=$counter?>" value="<?=$factura->vehiculo?>"/>
@@ -33,9 +33,9 @@
 
 <td class="<?=$class?>"><?=$factura->servicios?></td>
 
-			<th><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')"><img src="/images/delete.png" /></a></th>
-			<th><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')"><img src="/images/edit.png" /></a></th>
-			<th><a href="javascript:downloadAction('FacturaPdf','edit','<?=$factura->id?>')"><img src="/images/disk.png" /></a></th>
+			<th><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')"><img src="images/delete.png" /></a></th>
+			<th><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')"><img src="images/edit.png" /></a></th>
+			<th><a href="javascript:downloadAction('FacturaPdf','edit','<?=$factura->id?>')"><img src="images/disk.png" /></a></th>
 		</tr>
 <?php  
 		$counter++;

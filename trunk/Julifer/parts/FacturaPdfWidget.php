@@ -209,7 +209,7 @@ class PDF extends TablaCompPDF
 		$xCondiciones = $this->margenX ;
 		
 		
-		$fichero = "/var/www/lib/common/condiciones.txt";
+		$fichero = "lib/common/condiciones.txt";
 		$yCondiciones = $this ->  tablaDeFichero('CONDICIONES GENERALES DE REPARACIÓN', $fichero, $xCondiciones, $yPie, $anchoCondiciones);
 		$xConforme = $xCondiciones + $anchoCondiciones + $separador;
 		$this->tablaVacia('Conforme: EL CLIENTE', $xConforme  , $yPie, $anchoConforme, $yCondiciones - $yPie);
@@ -220,7 +220,7 @@ class PDF extends TablaCompPDF
 		//$this->tablaVacia('TOTALES',  $xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
 		$this->totales($xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
 
-		$textoPie = file("/var/www/lib/common/pie.txt");
+		$textoPie = file("lib/common/pie.txt");
 		$pie = "";
 		foreach ($textoPie as $lineaPie) {
 			$pie .= $lineaPie;

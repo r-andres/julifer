@@ -3,7 +3,7 @@
     define('SITE', $SITE); 
 	
     if ($SITE == "localhost") {
-		$ROOT = "/home/randres/php_workspace/Julifer";
+		$ROOT =  "C:\\Users\\monica\\workspace\\julifer";
     } else {
     	$ROOT = "/home/webcindario/x/a/xandres";
     }
