@@ -24,8 +24,8 @@ class FormHelper {
 		}
 	?>
 	</select>		
-	<img id="ver<?=$name?>" src="/images/go-bottom.png" border="0" />
-	<img id="ocultar<?=$name?>" src="/images/go-top.png" border="0" /></p>
+	<img id="ver<?=$name?>" src="images/go-bottom.png" border="0" />
+	<img id="ocultar<?=$name?>" src="images/go-top.png" border="0" /></p>
 	<div id="<?=$name?>Detalle">No disponible</div>
 
 <?php 
@@ -83,8 +83,8 @@ class FormHelper {
 ?>	
 
 <td >
-<img id="ver<?=$name . $tm?>" class="ver<?=$name?>" src="/images/go-bottom.png" border="0"  />
-<img id="ocultar<?=$name . $tm?>" class="ocultar<?=$name?>" src="/images/go-top.png" border="0" style="display: none" />
+<img id="ver<?=$name . $tm?>" class="ver<?=$name?>" src="images/go-bottom.png" border="0"  />
+<img id="ocultar<?=$name . $tm?>" class="ocultar<?=$name?>" src="images/go-top.png" border="0" style="display: none" />
 <div id="<?=$name . $tm?>Detalle" class="<?=$name?>Detalle"></div>
 <input type="hidden" id="<?=$name . $tm?>" value="<?=$elementId?>"/>
 </td>

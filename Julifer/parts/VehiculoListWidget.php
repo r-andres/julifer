@@ -12,7 +12,7 @@
 <th>km</th>
 <th>color</th>
 
-	<th><a href="javascript:doAction('VehiculoForm','new','')"><img src="/images/add.png" /></a></th>
+	<th><a href="javascript:doAction('VehiculoForm','new','')"><img src="images/add.png" /></a></th>
 <?php  
 	$currentTitle = "";
         $counter = 0;
@@ -31,8 +31,8 @@
 <td class="<?=$class?>"><?=$vehiculo->km?></td>
 <td class="<?=$class?>"><?=$vehiculo->color?></td>
 
-			<th><a href="javascript:doAction('VehiculoList','delete','<?=$vehiculo->id?>')"><img src="/images/delete.png" /></a></th>
-			<th><a href="javascript:doAction('VehiculoForm','edit','<?=$vehiculo->id?>')"><img src="/images/edit.png" /></a></th>
+			<th><a href="javascript:doAction('VehiculoList','delete','<?=$vehiculo->id?>')"><img src="images/delete.png" /></a></th>
+			<th><a href="javascript:doAction('VehiculoForm','edit','<?=$vehiculo->id?>')"><img src="images/edit.png" /></a></th>
 		</tr>
 <?php  
 		$counter++;

@@ -8,9 +8,9 @@
     	
     	if (SITE == "localhost") {
     		$db_server  = "localhost";
-    		$db_usuario = "root";
-    		$db_pass    = "brabojo";
-    		$db_bbdd    = "myxmind";
+    		$db_usuario = "julifer";
+    		$db_pass    = "julifer";
+    		$db_bbdd    = "julifer";
     	} else {
     		$db_server  = "mysql.webcindario.com";
     		$db_usuario = "xandres";

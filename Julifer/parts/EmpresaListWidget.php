@@ -13,7 +13,7 @@
 <th>telefono</th>
 <th>fax</th>
 
-	<th><a href="javascript:doAction('EmpresaForm','new','')"><img src="/images/edit.png" /></a></th>
+	<th><a href="javascript:doAction('EmpresaForm','new','')"><img src="images/edit.png" /></a></th>
 <?php  
 	$currentTitle = "";
         $counter = 0;
@@ -34,8 +34,8 @@
 <td class="<?=$class?>"><?=$empresa->telefono?></td>
 <td class="<?=$class?>"><?=$empresa->fax?></td>
 
-			<th><a href="javascript:doAction('EmpresaList','delete','<?=$empresa->id?>')"><img src="/images/delete.png" /></a></th>
-			<th><a href="javascript:doAction('EmpresaForm','edit','<?=$empresa->id?>')"><img src="/images/edit.png" /></a></th>
+			<th><a href="javascript:doAction('EmpresaList','delete','<?=$empresa->id?>')"><img src="images/delete.png" /></a></th>
+			<th><a href="javascript:doAction('EmpresaForm','edit','<?=$empresa->id?>')"><img src="images/edit.png" /></a></th>
 		</tr>
 <?php  
 		$counter++;
