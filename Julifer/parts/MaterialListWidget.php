@@ -11,6 +11,14 @@
 <?php  
 	$currentTitle = "";
         $counter = 0;
+        foreach ( $controller->errs as $error)  {
+        	?>
+        	<tr>
+			<td class="<?=$class?>"><?=$error?></td>
+			</tr>
+			
+        	<?php  
+        }
 	foreach ( $controller->list as $material)  {
 		
 		$class='';

@@ -88,6 +88,11 @@ class MaterialDAO  {
    	#generate id (from Oracle sequence or automatically)
    	#insert record into db
    	#set id on vo
+   	$material = $this->filteredList(" descripcion = '$vo->descripcion' ", "");
+   	if (!empty($material)){
+   		return "kk";
+   	}
+   	
    	$fieldsStr = "";
    	$valuesStr = "";
    	 
@@ -109,7 +114,6 @@ class MaterialDAO  {
 
    	$query = "INSERT INTO $this->TABLE_NAME ($fieldsStr) VALUES ($valuesStr) ";
    	$result = mysql_query($query, $this->conn) or db__showError();
+   	}
    }
- }
-
 ?>

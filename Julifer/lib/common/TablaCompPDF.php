@@ -120,8 +120,9 @@ class TablaCompPDF extends FPDF
 		$this->_filaCabecera ($x, $arrayCabeceras);
 		
 		foreach ($arrayDatos as $fila) {
-			$this->_filaDato($x, $fila, $arrayCabeceras, $contador == 0, $contador);	
-			$contador++;
+			//$this->_filaDato($x, $fila, $arrayCabeceras, $contador == 0, $contador);	
+			$this->_filaDato($x, $fila, $arrayCabeceras, $contador);	
+			$contador = $contador + 1;
 		}
 		$alturaRect = $this->GetY() - $y;
 		$anchoRect = array_sum($arrayCabeceras) ;
@@ -168,6 +169,7 @@ class TablaCompPDF extends FPDF
 		foreach ($fila as $etiqueta => $valor) {
 			
 			$this->SetTextColor(127, 127, 127);
+			$this->SetFillColor(177, 177, 177);
 			$this->SetFont('Arial','',8);
 			$miAncho = $anchos[$etiqueta];
 			$this->Cell($miAncho, $altura, utf8_decode($valor), ($contador > 0 ? "${borde}" : $borde) , 0,'C', ($contadorLinea % 2 == 0 ? "F" : "") );

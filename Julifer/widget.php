@@ -10,6 +10,7 @@ $files = array(
     'filesystem' => 'parts/filesystemWidget.php',
     'ClienteList' => 'parts/ClienteListWidget.php',
     'ClienteForm' => 'parts/ClienteFormWidget.php',
+    'ClienteSearch' => 'parts/ClienteSearchWidget.php',
     'ClienteView' => 'parts/ClienteViewWidget.php',
     'MaterialList' => 'parts/MaterialListWidget.php',
     'MaterialForm' => 'parts/MaterialFormWidget.php',

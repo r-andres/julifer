@@ -152,13 +152,13 @@ a:hover {
 /* Menu */
 
 #menu {
-	float: right;
+	float: left;
 	width: 700px;
 }
 
 #menu ul {
 	margin: 0px;
-	padding: 0px 0px 0px 15px;
+	padding: 0px 0px 0px 15px;	
 	list-style: none;
 }
 
@@ -401,22 +401,18 @@ a:hover {
 
 #formDiv label
 {
-width: 250px;
+width: 15em;
 float: left;
 text-align: right;
-margin-right: 100px;
+margin-right: 1em;
 display: block
 }
 
-#formDiv .submit input
-{
-margin-left: 4.5em;
-}
 #formDiv input
 {
 color: #781351;
 background: #fee3ad;
-border: 1px solid #781351
+border: 1px solid #781351;
 }
 
 
@@ -424,12 +420,15 @@ border: 1px solid #781351
 {
 color: #000;
 background: #ffa20f;
-border: 2px outset #d7b9c9
+border: 2px outset #d7b9c9;
+horizontal-align:right;
+margin-left: 17em;
 }
+
 #formDiv fieldset
 {
 border: 1px solid #781351;
-//width: 20em
+align: center;
 }
 
 #formDiv legend
@@ -449,3 +448,34 @@ padding: 2px 6px
 .filesystem table {
 	width: 100%;
 }
+
+#formDiv label.error
+{
+	display: none;
+	color: red;
+	font-style: italic;
+	font-weight: normal;
+	text-align: center;
+	margin-left: 312px;
+}
+
+label.error {
+	display: block;
+	color: red;
+	font-style: italic;
+	font-weight: normal;
+}
+
+#formDiv input.error
+{
+border: 2px solid red;
+}
+
+input.error {
+	border: 2px solid red;
+}
+div.error {
+	color: red;
+	height: 30px;
+}
+
