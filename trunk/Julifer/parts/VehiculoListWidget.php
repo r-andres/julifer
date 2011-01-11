@@ -5,12 +5,13 @@
 <table>
 <tbody>
 <tr>
-	<th>matricula</th>
+<th>matricula</th>
 <th>marca</th>
 <th>modelo</th>
 <th>cliente</th>
 <th>km</th>
 <th>color</th>
+<th>numero bastidor</th>
 
 	<th><a href="javascript:doAction('VehiculoForm','new','')"><img src="images/add.png" /></a></th>
 <?php  
@@ -30,6 +31,7 @@
 <?=FormHelper::tableDataDOM("cliente", $vehiculo->cliente, $tm)?>
 <td class="<?=$class?>"><?=$vehiculo->km?></td>
 <td class="<?=$class?>"><?=$vehiculo->color?></td>
+<td class="<?=$class?>"><?=$vehiculo->numerobastidor?></td>
 
 			<th><a href="javascript:doAction('VehiculoList','delete','<?=$vehiculo->id?>')"><img src="images/delete.png" /></a></th>
 			<th><a href="javascript:doAction('VehiculoForm','edit','<?=$vehiculo->id?>')"><img src="images/edit.png" /></a></th>

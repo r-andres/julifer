@@ -1,17 +1,24 @@
 <?php
 class Factura {
-	var $id, $fecha, $vehiculo, $servicios, $mecanica, $totalMecanica, $pintura, $totalPintura;
+	var $id, $fecha, $estado, $vehiculo, $servicios, $mecanica, $totalMecanica, $descuentoMecanica,  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado;
 	
 	function dump ($arr) {
 		
 		$this->id = $arr['id'];
 		$this->fecha = $arr['fecha'];
+		$this->estado = $arr['estado'];
 		$this->vehiculo = $arr['vehiculo'];
 		$this->servicios =  array ();
 		$this->mecanica = $arr['mecanica'];
 		$this->totalMecanica = $arr['totalMecanica'];
+		$this->descuentoMecanica = $arr['descuentoMecanica'];
+		
 		$this->pintura = $arr['pintura'];
 		$this->totalPintura = $arr['totalPintura'];
+		$this->descuentoPintura = $arr['descuentoPintura'];
+		
+		$this->pagado = $arr['pagado'];
+		$this->franquicia = $arr['franquicia'];
 		
 		$keys = array_keys($arr); 
 //		usort($keys, "Factura::cmp" );

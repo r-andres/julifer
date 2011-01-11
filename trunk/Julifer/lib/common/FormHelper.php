@@ -3,6 +3,26 @@
 class FormHelper { 
 
 	
+	
+	function formSelectDOM  ( $name, $listElements, $selectedId ) {
+	?>	
+	<p><label for="<?=$name?>"><?=$name?></label>
+	<select name="<?=$name?>" id="<?=$name?>"> 
+	<?php 
+		foreach ($listElements as $element) {
+			$selected = '';
+			if ($element == $selectedId ) {
+				$selected = 'SELECTED';
+			}
+			echo ("<option value=\"$element->id\" $selected > " . $element . " </option>");
+		}
+	?>
+	</select></p>		
+	
+<?php 
+	}
+	
+	
 	/**
 	 * @param $name
 	 * @param $listElements
