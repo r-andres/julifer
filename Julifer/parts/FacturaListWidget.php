@@ -6,7 +6,7 @@
 <tr>
 	<th>fecha</th>
 <th>vehiculo</th>
-<th>servicios</th>
+<th>estado</th>
 
 	<th><a href="javascript:doAction('FacturaForm','new','')"><img src="images/add.png" /></a></th>
 <?php  
@@ -31,7 +31,7 @@
 </td>
 
 
-<td class="<?=$class?>"><?=$factura->servicios?></td>
+<td class="<?=$class?>"><?=$factura->estado?></td>
 
 			<th><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')"><img src="images/delete.png" /></a></th>
 			<th><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')"><img src="images/edit.png" /></a></th>
