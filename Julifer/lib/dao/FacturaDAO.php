@@ -66,11 +66,16 @@ class FacturaDAO  {
    function getFromResult(&$vo, $result) {
    	 $vo->id = $result['id'];
      $vo->fecha = $result['cfecha'];
+     $vo->estado = $result['estado'];
      $vo->vehiculo = $result['idvehiculo'];
      $vo->mecanica = $result['mecanica'];
 	 $vo->totalMecanica = $result['totalmecanica'];
+	 $vo->descuentoMecanica = $result['descuentomecanica'];
 	 $vo->pintura = $result['pintura'];
 	 $vo->totalPintura = $result['totalpintura'];
+     $vo->descuentoPintura = $result['descuentopintura'];
+     $vo->franquicia = $result['franquicia'];
+     $vo->pagado = $result['pagado'];
      
      $list =  array () ;
      $query2 = "SELECT * FROM  materialFacturados WHERE idfactura = $vo->id ";
@@ -91,16 +96,23 @@ class FacturaDAO  {
 
    function update(&$vo) {
    	#execute update statement here
-   	$query = "UPDATE $this->TABLE_NAME SET fecha = '$vo->fecha' , idvehiculo = '$vo->vehiculo',   ". 
-   			 " mecanica = '$vo->mecanica', totalmecanica = '$vo->totalMecanica', ".
-   			 " pintura= '$vo->pintura', totalpintura= '$vo->totalPintura' WHERE id = '$vo->id' ";
-   	$result = mysql_query($query, $this->conn) or db__showError();
+   	$query = "UPDATE $this->TABLE_NAME SET estado = '$vo->estado' ,fecha = '$vo->fecha' , idvehiculo = '$vo->vehiculo',   ". 
+   			 " franquicia = '$vo->franquicia' , pagado = '$vo->pagado',  " .
+   			 " mecanica = '$vo->mecanica', totalmecanica = '$vo->totalMecanica', descuentomecanica = '$vo->descuentoMecanica', ".
+   			 " pintura= '$vo->pintura', totalpintura= '$vo->totalPintura', descuentopintura= '$vo->descuentoPintura' WHERE id = '$vo->id' ";
+   	$result = mysql_query($query, $this->conn) or db__showErrorCause($query);
    	$this->insertServiciosFacturados($vo->id, $vo->servicios, true);
    }
 
    function insert(&$vo) {   	
-   	$query = "INSERT INTO $this->TABLE_NAME (fecha, idvehiculo , mecanica, totalmecanica, pintura, totalpintura) " .
-   			 "VALUES ( '$vo->fecha' , '$vo->vehiculo' , '$vo->mecanica' , '$vo->totalMecanica' , '$vo->pintura' , '$vo->totalPintura') ";
+   	$query = "INSERT INTO $this->TABLE_NAME (estado, fecha, idvehiculo , " .
+   											" franquicia, pagado, " .
+   											" mecanica, totalmecanica, descuentomecanica," .
+   											" pintura, totalpintura, descuentopintura) " .
+   			 "VALUES ( '$vo->estado' , '$vo->fecha' , '$vo->vehiculo' , " . 
+   					 " '$vo->franquicia', '$vo->pagado',  " .
+   			     	 " '$vo->mecanica' , '$vo->totalMecanica', '$vo->descuentoMecanica' , " . 
+   			     	 " '$vo->pintura' , '$vo->totalPintura', '$vo->descuentoPintura') ";
    	$result = mysql_query($query, $this->conn) or db__showError();
     $idFactura = mysql_insert_id($this->conn);
     $this->insertServiciosFacturados($idFactura, $vo->servicios, false);

@@ -47,14 +47,33 @@ class PDF extends TablaCompPDF
 		$this->detalleMateriales( 10 , $this->GetY(), $this->factura->servicios);
 		
 		$this->ln(5);
-		$this->tablaFilasGrupo( "Mecánica",  $this->factura-> mecanica, 
-								"TOTAL CHAPA-MECÁNICA", number_format($this->factura->totalMecanica, 2) , 10, $this->GetY(), $ancho * 2 );
 		
+		$totalesMecanica = array ( "Importe Chapa" => number_format($this->factura->totalMecanica, 2)  );
+		$totalMecanica = $this->factura->totalMecanica; 
+		if ($this->factura->descuentoMecanica != 0) {
+			$totalesMecanica["Descuento"] = number_format($this->factura->descuentoMecanica, 2);
+			$totalMecanica =  $this->factura->totalMecanica - (( $this->factura->totalMecanica * $this->factura->descuentoMecanica) / 100); 
+			$totalesMecanica["Total Chapa"] = number_format( $totalMecanica , 2);
+		}
+		$this->tablaFilasGrupo( "Chapa",  $this->factura-> mecanica, 
+								$totalesMecanica , 10, $this->GetY(), $ancho * 2 );
+		
+		$this->recalculadoMecanica	= $totalMecanica;					
+								
 		$this->ln(5);
+		
+		$totalesPintura = array ( "Importe Pintura" => number_format($this->factura->totalPintura, 2)  );
+		$totalPintura = $this->factura->totalPintura;
+		if ($this->factura->descuentoPintura != 0) {
+			$totalesPintura["Descuento"] = number_format($this->factura->descuentoPintura, 2);
+			$totalPintura =  $this->factura->totalPintura - (( $this->factura->totalPintura * $this->factura->descuentoPintura) / 100); 
+			$totalesPintura["Total pintura"] = number_format( $totalPintura , 2);
+		}
+		$this->recalculadoPintura = $totalPintura;
 		$this->tablaFilasGrupo( "Pintura",  $this->factura-> pintura, 
-								"TOTAL PINTURA", number_format($this->factura->totalPintura, 2) , 10, $this->GetY(), $ancho * 2 );
+								$totalesPintura , 10, $this->GetY(), $ancho * 2 );
 		
-		
+			
 				
 
 	}
@@ -65,21 +84,39 @@ class PDF extends TablaCompPDF
 		
 		
 		$cliente = $this->factura->cliente;
-		$manoDeObra = $this->factura->totalMecanica + $this->factura->totalPintura;
+		$manoDeObra = $this->recalculadoPintura + $this->recalculadoMecanica  ;
 		$materiales = $this->totalMateriales;
 		$subtotal = $manoDeObra + $materiales;
 		$tipoImpositivo = 18;
 		$iva = ($subtotal * $tipoImpositivo) / 100;
-		$total = $subtotal + $iva;
+		
+		$franquicia = $this->factura->franquicia;
+		$total = $subtotal + $iva ;
+		
 		
 		$datos = array (
 				'MANO DE OBRA' => number_format($manoDeObra, 2) ,
 				'MATERIALES'=>   number_format( $materiales, 2) ,
 				'SUBTOTAL'=> number_format($subtotal, 2), 
-				" " =>  " ",
-				"I.V.A. ($tipoImpositivo %) " =>  number_format($iva, 2),
-				"  " => " ",
-				'TOTAL'=>  number_format($total, 2), );
+				"I.V.A. ($tipoImpositivo %) " =>  number_format($iva, 2));
+		
+		$totalFactura = $total;
+	
+		if ($franquicia != 0) {
+			$datos['TOTAL']	= number_format($total, 2);
+			$datos['  ']	= " ";
+			$datos['FRANQUICIA']	= number_format($franquicia, 2);
+			
+			$totalFactura = $total - $franquicia;
+			if ($totalFactura <= 0) {
+				$totalFactura = 0;
+			}
+		} else {
+			$datos['  ']	= " ";
+		} 
+		
+		$datos['TOTAL FACTURA']	= number_format($totalFactura , 2);
+		
 		
 		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho , $alto);
 	}
@@ -97,7 +134,7 @@ class PDF extends TablaCompPDF
 				     ),
 				     array ( 'kms' => $this->factura->vehiculo->km ,
 				      'color' => $this->factura->vehiculo->color ,
-				      'factura' => $this->factura->id 
+				      'num bastidor' => $this->factura->vehiculo->numerobastidor 
 				     ));
 		
 		return $this->tablaGruposEtiquetaDato($datos, $x, $y, $ancho);
@@ -201,9 +238,9 @@ class PDF extends TablaCompPDF
 		$this->SetY(-1 * $this->margenPie);
 
 		$yPie = $this->GetY();
-		$anchoCondiciones = 45;
-		$anchoConforme = 45;
-		$anchoFirma = 45;
+		$anchoCondiciones = 65;
+		$anchoConforme = 35;
+		$anchoFirma = 35;
 		$anchoTotales = 45;
 		$separador = 3;
 		$xCondiciones = $this->margenX ;

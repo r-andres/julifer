@@ -180,7 +180,7 @@ class TablaCompPDF extends FPDF
 	}
 	
 	
-	function tablaFilasGrupo ( $titulo, $descripcion, $totalTitulo, $total  , $x , $y , $ancho)
+	function tablaFilasGrupo ( $titulo, $descripcion, $totales  , $x , $y , $ancho)
 	{
 		$this->SetY($y);
 
@@ -201,17 +201,19 @@ class TablaCompPDF extends FPDF
 		
 		$alturaRect = $this->GetY() - $y;
 		$anchoRect = $ancho;
-		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 , '' , '12');
+		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 , '' , '124');
 		
 		
-		$this->SetX($x);
-		$this->SetTextColor(0, 0, 0);
-		$this->SetFont('Arial','B', 8);
-		$this->Cell ($ancho - 30 , $altura , utf8_decode($totalTitulo), 0 , 0 , 'R');
-		$this->SetFont('Arial','', 8);
-		$this->Cell (30 , $altura , utf8_decode($total), 'LRTB' , 0 , 'R');
-		$this->ln($altura);
-
+		foreach ($totales as $totalTitulo => $total) {
+		
+			$this->SetX($x);
+			$this->SetTextColor(0, 0, 0);
+			$this->SetFont('Arial','B', 8);
+			$this->Cell ($ancho - 30 , $altura , utf8_decode($totalTitulo), 0 , 0 , 'R');
+			$this->SetFont('Arial','', 8);
+			$this->Cell (30 , $altura , utf8_decode($total), 'LRTB' , 0 , 'R');
+			$this->ln($altura);
+		}
 		
 		return $this->GetY();
 	}
@@ -227,15 +229,15 @@ class TablaCompPDF extends FPDF
 		
 		$this->SetY($y);
 		$this->SetX($x + 1);
-		$this->SetFont('Arial','B',4);
+		$this->SetFont('Arial','B',5);
 		$this->Cell ($ancho , 4 , utf8_decode($titulo));
 		$this->Ln(4);
-		$this->SetFont('Arial','B',3);
+		$this->SetFont('Arial','B',4);
 		$lineas=file($fichero);
 		$data=array();
 		foreach($lineas as $linea) {
 		    $this->SetX($x);	
-		    $this->MultiCell ($ancho , 3 , utf8_decode($linea));
+		    $this->MultiCell ($ancho , 4 , utf8_decode($linea));
 		}
 
 		$alturaRect = $this->GetY() - $y;
