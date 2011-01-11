@@ -3,16 +3,34 @@
 	$material= $controller->material;
 
 ?>
+
+<script type="text/javascript" src="js/forms/material.js"></script>
+
 <div id="formDiv">
 <form id="myForm">
 <fieldset>
 <legend>Material</legend>
-<p><label for="descripcion">descripcion</label> <input type="text" name="descripcion" value="<?=$material->descripcion?>" /></p>
-<p><label for="preciounitario">preciounitario</label> <input type="text" name="preciounitario" value="<?=$material->preciounitario?>" /></p>
+<div class="error" style="display:none;">
+ <span></span><br clear="all"/>
+</div>
 
-<input type="hidden" name="id" value="<?=$material->id?>" />
-<p class="submit"><input type="button" value="Submit" onclick="javascript:sendForm('MaterialList','save','<?=$material->id?>')"  /></p>
-<p class="submit"><input type="button" value="Back to List" onclick="javascript:doActionToTarget('#content','MaterialList)"  /></p>
+<p>
+  <label for="descripcion">Nombre del producto</label> 
+  <input type="text" id="descripcion" name="descripcion" class="required" value="<?=$material->descripcion?>" />
+</p>
+<p><label for="preciounitario">Precio</label> 
+  <input type="text" id="preciounitario" name="preciounitario" class="required" value="<?=$material->preciounitario?>" />
+</p>
+
+<input type="hidden" name="id" id="id" value="<?=$material->id?>" />
+<p class="submit">
+ <input type="submit" value="Submit"  />
+</p>
+<!-- 
+<p class="submit">
+  <input type="button" value="Back to List" onclick="javascript:doActionToTarget('#content','MaterialList')"  />
+</p>
+ -->
 </fieldset>
 </form> 
 </div>

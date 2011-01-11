@@ -1,11 +1,13 @@
 <?php
 	$SITE = "localhost"; 
+	//$SITE = "webcindario"; 
     define('SITE', $SITE); 
 	
     if ($SITE == "localhost") {
 		$ROOT =  "C:\\Users\\monica\\workspace\\julifer";
     } else {
-    	$ROOT = "/home/webcindario/x/a/xandres";
+//    	$ROOT = "/home/webcindario/x/a/xandres";
+    	$ROOT =  "/home/webcindario/t/a/talleresjulifer/";
     }
     
 	define('ROOT', $ROOT);

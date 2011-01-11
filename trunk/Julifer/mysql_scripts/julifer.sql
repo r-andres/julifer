@@ -1,3 +1,4 @@
+
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `id` int(11) NOT NULL auto_increment,

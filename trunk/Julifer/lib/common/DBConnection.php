@@ -13,9 +13,9 @@
     		$db_bbdd    = "julifer";
     	} else {
     		$db_server  = "mysql.webcindario.com";
-    		$db_usuario = "xandres";
-    		$db_pass    = "WfzI8P0b9XDQ";
-    		$db_bbdd    = "xandres";
+    		$db_usuario = "talleresjulifer";
+    		$db_pass    = "julifer";
+    		$db_bbdd    = "talleresjulifer";
     	}
     	
       	$db =mysql_connect($db_server, $db_usuario, $db_pass) or db__showError();

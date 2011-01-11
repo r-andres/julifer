@@ -1021,7 +1021,7 @@ function Output($name='', $dest='')
 				header('Content-Disposition: inline; filename="'.$name.'"');
 				header('Cache-Control: private, max-age=0, must-revalidate');
 				header('Pragma: public');
-				ini_set('zlib.output_compression','0');
+				@ini_set('zlib.output_compression','0');
 			}
 			echo $this->buffer;
 			break;

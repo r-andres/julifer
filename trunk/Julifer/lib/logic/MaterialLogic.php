@@ -19,7 +19,7 @@ class MaterialLogic {
 
 	function saveMaterial(&$material) {
 		$dao = new MaterialDAO(db__connect());
-		$dao->save($material);
+		return $dao->save($material);
 	}
 } 
 ?>

@@ -98,8 +98,7 @@ class FacturaDAO  {
    	$this->insertServiciosFacturados($vo->id, $vo->servicios, true);
    }
 
-   function insert(&$vo) {
-
+   function insert(&$vo) {   	
    	$query = "INSERT INTO $this->TABLE_NAME (fecha, idvehiculo , mecanica, totalmecanica, pintura, totalpintura) " .
    			 "VALUES ( '$vo->fecha' , '$vo->vehiculo' , '$vo->mecanica' , '$vo->totalMecanica' , '$vo->pintura' , '$vo->totalPintura') ";
    	$result = mysql_query($query, $this->conn) or db__showError();

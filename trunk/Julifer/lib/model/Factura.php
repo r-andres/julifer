@@ -14,7 +14,8 @@ class Factura {
 		$this->totalPintura = $arr['totalPintura'];
 		
 		$keys = array_keys($arr); 
-		usort($keys, "Factura::cmp" );
+//		usort($keys, "Factura::cmp" );
+		usort($keys, array( $this, 'cmp' ) );
 		foreach ($keys as $key) {
 			
 			$keyComponents = explode("_", $key);

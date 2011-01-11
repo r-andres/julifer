@@ -23,16 +23,19 @@ class MaterialController {
     }  else if ($action == 'save') {
     	$material = new Material();
     	$material->dump($_POST);
-    	$this->cliente = MaterialLogic::saveMaterial($material);
+    	$result = MaterialLogic::saveMaterial($material);
     } else if ($action == 'new') {
     	$this->material = new Material();
     	$this->material->id = 0;
     	$updateList = false; 
     }  
     
-    
-    if ($updateList) {
-    	MaterialLogic::listMateriales($this->list); 
+    if (!empty($result)) {
+    	array_push($this->errs,$result);
+    } else {
+	    if ($updateList) {
+	    	MaterialLogic::listMateriales($this->list); 
+	    }
     }
 	    
   }
