@@ -160,10 +160,11 @@ class PDF extends TablaCompPDF
 
 	function detalleMateriales ($x, $y, $data) {
 		
-		$cabecera = array(utf8_decode('Cantidad') => 30,
-						  utf8_decode('Descripción') => 95,
+		$cabecera = array(utf8_decode('Cantidad') => 25,
+						  utf8_decode('Descripción') => 85,
 					      utf8_decode('Precio por Unidad') => 30,
-						  utf8_decode('Precio')  => 30);
+					      utf8_decode('Descuento') => 20,
+						  utf8_decode('Precio')  => 25);
 		
 		$subtotal = 0;
 		$datos = array();
@@ -171,13 +172,15 @@ class PDF extends TablaCompPDF
 		{
 			$fila = array ();
 			$cantidad = $row->cantidad;
-			$servicio = $this->buscaEnLista($row->servicio, $this->listaServicios);
-			$descripcion = $servicio->descripcion;
-			$preciounitario = $servicio->preciounitario;
-			$precio =  $cantidad *  $preciounitario;
+			$descripcion = $row->material;
+			$preciounitario = $row->precio;
+			$descuento = $row->descuento;
+			$preciodescuento = $preciounitario - (( $preciounitario *  $descuento) / 100) ;
+			$precio =  $cantidad *  $preciodescuento;
 			$fila[utf8_decode('Cantidad')] = number_format($cantidad, 2);
 			$fila[utf8_decode('Descripción')] = utf8_decode($descripcion);
 			$fila[utf8_decode('Precio por Unidad')] = number_format($preciounitario, 2);
+			$fila[utf8_decode('Descuento')] = number_format($descuento, 2) . "%";
 			$fila[utf8_decode('Precio')] = number_format($precio, 2);
 			$this->totalMateriales += $precio;
 			array_push($datos, $fila);
