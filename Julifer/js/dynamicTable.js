@@ -1,8 +1,7 @@
 
-function RecordList ( parent, selectorCache ) {
+function RecordList ( parent ) {
      
      var self = this;
-     this.selectorCache = selectorCache;
      this.elements = Array ();
      this.buildUi(parent);
      this.counter = 0;
@@ -39,15 +38,21 @@ RecordList.prototype = {
   
     cmdAddNewServicio : function (obj) {
     	
-       var newElement = new Servicio (this.ref, this.ref.selectorCache);
+       var newElement = new Servicio (this.ref);
        newElement.cantidad = 1;
-       newElement.servicio = "";
+       newElement.servicio = "Material";
+       newElement.precio = 0;
+       newElement.descuento = 0;
+       
        this.ref.add(newElement);
     },
     
     
     add : function (element) {
-
+    		if (this.elements.length == 0) {
+    			this.addTableHeader();
+    		}
+    	
     		var rowView = element.getRowEdit();
             this.listWidget.appendChild(rowView);
             
@@ -57,22 +62,49 @@ RecordList.prototype = {
             this.counter ++;
     },
     
-    addServicio : function (cantidad, servicio) {
+    addServicio : function (cantidad, servicio, precio, descuento) {
 
-    	var newElement = new Servicio (this, this.selectorCache);
+    	var newElement = new Servicio (this);
         newElement.cantidad = cantidad;
         newElement.servicio = servicio;
+        newElement.precio = precio;
+        newElement.descuento = descuento;
         this.add(newElement);
     },
     
+    addTableHeader : function () {
+		var header = document.createElement('tr');
+        var cellCantidad = document.createElement('th');
+    	var cellServicio = document.createElement('th');
+    	var cellPrecio = document.createElement('th');
+    	var cellDescuento = document.createElement('th');
+    	var cellDelete = document.createElement('th');
+    	
+    	cellCantidad.innerHTML = "Cantidad";
+    	cellServicio.innerHTML = "Descripción";
+    	cellPrecio.innerHTML = "Precio Unitario";
+    	cellDescuento.innerHTML = "Descuento";
+    	
+    	header.appendChild(cellCantidad);
+    	header.appendChild(cellServicio);
+    	header.appendChild(cellPrecio);
+    	header.appendChild(cellDescuento);
+    	header.appendChild(cellDelete);
+    	this.tableHeader = header;
+    	this.listWidget.appendChild(header);
+    },
+    
+    removeTableHeader : function () {
+    	this.listWidget.removeChild(this.tableHeader);
+    },
 }
 
 
-function Servicio (listObj, selectorCache)
+function Servicio (listObj)
 {
     var self = this;
     this.listObj = listObj;
-    this.selectorCache = selectorCache;
+   
  
     
     this.buildUi ();
@@ -87,15 +119,22 @@ Servicio.prototype = {
 	
 		var index = this.listObj.counter;
 		
-        var rowEdit = document.createElement('tr');
+		var rowEdit = document.createElement('tr');
         var cellCantidad = document.createElement('td');
     	var cellServicio = document.createElement('td');
+    	var cellPrecio = document.createElement('td');
+    	var cellDescuento = document.createElement('td');
     	var cellDelete = document.createElement('td');
+    	
     	var cantidadField = document.createElement('input');
     	cantidadField.name= "cantidad_" + index;
-    	var servicioField = document.createElement('select');
-    	servicioField.innerHTML= this.selectorCache.innerHTML;
-    	servicioField.name= "servicio_" + index;
+    	var servicioField = document.createElement('input');
+    	servicioField.name= "material_" + index;
+    	var precioField = document.createElement('input');
+    	precioField.name= "precio_" + index;
+    	var descuentoField = document.createElement('input');
+    	descuentoField.name= "descuento_" + index;
+    	
     	var deleteButton = document.createElement('div');
     	deleteButton.innerHTML = "(X)";
     	deleteButton.addEventListener('click', this.cmdDelete  , false); 
@@ -104,13 +143,20 @@ Servicio.prototype = {
             
     	cellCantidad.appendChild(cantidadField);
     	cellServicio.appendChild(servicioField);
+    	cellPrecio.appendChild(precioField);
+    	cellDescuento.appendChild(descuentoField);
+    	
     	cellDelete.appendChild(deleteButton);
     	
     	rowEdit.appendChild(cellCantidad);
     	rowEdit.appendChild(cellServicio);
+    	rowEdit.appendChild(cellPrecio);
+    	rowEdit.appendChild(cellDescuento);
         rowEdit.appendChild(cellDelete);
     	this.cantidadField = cantidadField;
     	this.servicioField = servicioField;
+    	this.precioField = precioField;
+    	this.descuentoField = descuentoField;
     	
     	this.editView = rowEdit;
 
@@ -138,6 +184,25 @@ Servicio.prototype = {
         this.servicioField.value = x;
     },
    
+    get precio ()
+    {
+        return this.precioField.value;
+    },
+
+    set precio (x)
+    {
+        this.precioField.value = x;
+    },
+    
+    get descuento ()
+    {
+        return this.descuentoField.value;
+    },
+
+    set descuento (x)
+    {
+        this.descuentoField.value = x;
+    },
     
     getRowEdit : function () 
     {
@@ -149,12 +214,18 @@ Servicio.prototype = {
     	var row = document.createElement('tr');
     	var cellCantidad = document.createElement('td');
     	var cellServicio = document.createElement('td');
+    	var cellPrecio= document.createElement('td');
+    	var cellDescuento = document.createElement('td');
     	
     	cellCantidad.innerHTML = this.cantidad;
     	cellServicio.innerHTML = this.servicio;
+    	cellPrecio.innerHTML = this.descuento;
+    	cellDescuento.innerHTML = this.precio;
     	
     	row.appendChild(cellCantidad);
     	row.appendChild(cellServicio);
+    	row.appendChild(cellPrecio);
+    	row.appendChild(cellDescuento);
     	
     	return row;
     },
@@ -176,9 +247,16 @@ Servicio.prototype = {
     	if (indxToDelete != -1) {
     		list.listWidget.removeChild(currentEls[indxToDelete].editView);
     		currentEls.splice(indxToDelete, 1);
+    	
+    		if (currentEls.length == 0) {
+    			list.removeTableHeader();
+    		}
+    		
+    	
     	} else {
     		alert("No puedo borrar " + this.index)
     	}
+    	
     },
 }
 

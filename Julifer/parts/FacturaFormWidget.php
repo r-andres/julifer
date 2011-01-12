@@ -44,20 +44,13 @@
 </form> 
 </div>
 
-<select id="selectorCache" style="visibility: hidden; ">
-<?php
-	
-	foreach ($listaMateriales as $material) {
-		echo ("<option value=\"$material->id\">$material->descripcion $material->preciounitario</option>");
-	}
-?>
-</select>
+
 <script type="text/javascript">
-var rl = new RecordList(document.getElementById('divMateriales'), document.getElementById('selectorCache'));
+var rl = new RecordList(document.getElementById('divMateriales'));
 <?php
 if ($factura->servicios != '') {
 		foreach ($factura->servicios as $servFac) {
-			echo ("rl.addServicio($servFac->cantidad, $servFac->servicio);\n");
+			echo ("rl.addServicio($servFac->cantidad, '$servFac->material', $servFac->precio, $servFac->descuento);\n");
 		}
 }
 ?>

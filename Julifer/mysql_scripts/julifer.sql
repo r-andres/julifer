@@ -65,8 +65,10 @@ DROP TABLE IF EXISTS `materialFacturados`;
 CREATE TABLE `materialFacturados` (
   `id` int(11) NOT NULL auto_increment,
   `idfactura` int(11),
-  `idservicio` int(11),
+  `material` text,
   `cantidad` double,
+  `precio` double,
+  `descuento` double,
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
