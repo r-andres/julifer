@@ -86,7 +86,9 @@ class FacturaDAO  {
                 $element = new MaterialFacturado ();
                 $element->cantidad = $myrow2['cantidad'];
                 $element->id = $myrow2['id'];
-                $element->servicio = $myrow2['idservicio'];
+                $element->material = $myrow2['material'];
+                $element->precio = $myrow2['precio'];
+                $element->descuento = $myrow2['descuento'];
                 array_push($list,$element);
             } while ($myrow2 = mysql_fetch_array($result2));
         }
@@ -130,12 +132,14 @@ class FacturaDAO  {
    	    
    		foreach ( $servicios as $servicioFacturado) {
    			
-   			$servicioId = $servicioFacturado->servicio;
+   			$material = $servicioFacturado->material;
    			$cantidad = $servicioFacturado->cantidad;
+   			$precio = $servicioFacturado->precio;
+   			$descuento = $servicioFacturado->descuento;
    			
-   	  		$query = "INSERT INTO materialFacturados (idfactura, idservicio, cantidad) " . 
-   	  		         " VALUES ( $idFactura , '$servicioId', $cantidad) ";
-   			$result = mysql_query($query, $this->conn) or db__showError();
+   	  		$query = "INSERT INTO materialFacturados (idfactura, material, cantidad, precio, descuento) " . 
+   	  		         " VALUES ( $idFactura , '$material', $cantidad, $precio, $descuento) ";
+   			$result = mysql_query($query, $this->conn) or db__showErrorCause($query);
    		}
    }
  }

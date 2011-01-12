@@ -30,10 +30,14 @@ class Factura {
 			if ( strcmp($keyName, "cantidad") == 0) {
 				$keyCounter = $keyComponents[1];
 				$cantidad = $arr["cantidad_$keyCounter"];
-				$servicioId = $arr["servicio_$keyCounter"];
+				$material = $arr["material_$keyCounter"];
+				$precio = $arr["precio_$keyCounter"];
+				$descuento = $arr["descuento_$keyCounter"];
 				$serv = new materialfacturado();
 				$serv->cantidad = $cantidad;
-				$serv->servicio = $servicioId;
+				$serv->material = $material;
+				$serv->precio = $precio;
+				$serv->descuento = $descuento;
 				array_push($this->servicios, $serv);
 			}
 			
