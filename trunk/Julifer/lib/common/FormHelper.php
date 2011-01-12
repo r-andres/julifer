@@ -14,7 +14,7 @@ class FormHelper {
 			if ($element == $selectedId ) {
 				$selected = 'SELECTED';
 			}
-			echo ("<option value=\"$element->id\" $selected > " . $element . " </option>");
+			echo ("<option value=\"$element\" $selected > " . $element . " </option>");
 		}
 	?>
 	</select></p>		
