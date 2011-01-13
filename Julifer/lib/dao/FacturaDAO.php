@@ -66,7 +66,7 @@ class FacturaDAO  {
    function getFromResult(&$vo, $result) {
    	 $vo->id = $result['id'];
      $vo->fecha = $result['cfecha'];
-     $vo->estado = $result['estado'];
+     $vo->tipo = $result['tipo'];
      $vo->vehiculo = $result['idvehiculo'];
      $vo->mecanica = $result['mecanica'];
 	 $vo->totalMecanica = $result['totalmecanica'];
@@ -98,7 +98,7 @@ class FacturaDAO  {
 
    function update(&$vo) {
    	#execute update statement here
-   	$query = "UPDATE $this->TABLE_NAME SET estado = '$vo->estado' ,fecha = '$vo->fecha' , idvehiculo = '$vo->vehiculo',   ". 
+   	$query = "UPDATE $this->TABLE_NAME SET tipo = '$vo->tipo' ,fecha = '$vo->fecha' , idvehiculo = '$vo->vehiculo',   ". 
    			 " franquicia = '$vo->franquicia' , pagado = '$vo->pagado',  " .
    			 " mecanica = '$vo->mecanica', totalmecanica = '$vo->totalMecanica', descuentomecanica = '$vo->descuentoMecanica', ".
    			 " pintura= '$vo->pintura', totalpintura= '$vo->totalPintura', descuentopintura= '$vo->descuentoPintura' WHERE id = '$vo->id' ";
@@ -107,11 +107,11 @@ class FacturaDAO  {
    }
 
    function insert(&$vo) {   	
-   	$query = "INSERT INTO $this->TABLE_NAME (estado, fecha, idvehiculo , " .
+   	$query = "INSERT INTO $this->TABLE_NAME (tipo, fecha, idvehiculo , " .
    											" franquicia, pagado, " .
    											" mecanica, totalmecanica, descuentomecanica," .
    											" pintura, totalpintura, descuentopintura) " .
-   			 "VALUES ( '$vo->estado' , '$vo->fecha' , '$vo->vehiculo' , " . 
+   			 "VALUES ( '$vo->tipo' , '$vo->fecha' , '$vo->vehiculo' , " . 
    					 " '$vo->franquicia', '$vo->pagado',  " .
    			     	 " '$vo->mecanica' , '$vo->totalMecanica', '$vo->descuentoMecanica' , " . 
    			     	 " '$vo->pintura' , '$vo->totalPintura', '$vo->descuentoPintura') ";

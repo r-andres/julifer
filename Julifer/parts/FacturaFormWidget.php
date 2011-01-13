@@ -15,14 +15,15 @@
 		$fecha = $hoy['year'] . "-" .$hoy['mon'] . "-" . $hoy['mday'];
 	}
 	
-	$listaEstados = array ("PRESUPUESTO", "PENDIENTE", "PAGADO");
+	$listaEstados = array (Factura::TIPO_PRESUPUESTO, Factura::TIPO_FACTURA);
 
 ?>
 <div id="formDiv">
 <form id="myForm">
 <fieldset>
 <legend>Factura</legend>
-<?=FormHelper::formSelectDOM("estado", $listaEstados , $factura->estado )?> 
+<?=FormHelper::formSelectDOM("tipo","tipo", $listaEstados , $factura->tipo )?> 
+<p><label for="pagado">pagado</label> <input type="text" name="pagado" value="<?=$factura->pagado?>" /></p>
 <p><label for="fecha">fecha</label> <input type="text" name="fecha" value="<?=$fecha?>" /></p>
 <?=FormHelper::formFieldDOM("vehiculo", $listaVehiculos , $factura->cliente )?> 
 <p><label for="divMateriales">materiales</label><div id="divMateriales" name="divMateriales"/></p>

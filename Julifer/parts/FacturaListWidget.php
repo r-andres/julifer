@@ -4,15 +4,37 @@
 <table>
 <tbody>
 <tr>
-	<th>fecha</th>
+<th>fecha</th>
 <th>vehiculo</th>
+<th>tipo</th>
+<th>importe</th>
+<th>pagado</th>
 <th>estado</th>
 
 	<th><a href="javascript:doAction('FacturaForm','new','')"><img src="images/add.png" /></a></th>
 <?php  
 	$currentTitle = "";
-        $counter = 0;
-	foreach ( $controller->list as $factura)  {
+    $counter = 0;
+   
+	    
+    
+    
+    foreach ( $controller->list as $factura)  {
+
+    	$pagado = "-";
+    	$estado = "-";
+
+    	if ($factura->tipo == Factura::TIPO_FACTURA) {
+    		$pagado = FormHelper::euroFormat($factura->pagado);
+    		$deuda = $factura->total() - $factura->pagado;
+    		$estado = Factura::ESTADO_PAGADO;
+    		if ($deuda > 0) {
+    			$estado = Factura::ESTADO_PENDIENTE . " -" . FormHelper::euroFormat($deuda) ;
+    		}
+    	}
+		
+    	
+    	
 		
 		$class='';
 		if ($counter % 2 == 0) {
@@ -31,7 +53,10 @@
 </td>
 
 
-<td class="<?=$class?>"><?=$factura->estado?></td>
+<td class="<?=$class?>"><?=$factura->tipo?></td>
+<td nowrap="yes" class="<?=$class?>"><?=FormHelper::euroFormat($factura->total())?></td>
+<td nowrap="yes" class="<?=$class?>"><?=$pagado?></td>
+<td class="<?=$class?>"><?=$estado?></td>
 
 			<th><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')"><img src="images/delete.png" /></a></th>
 			<th><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')"><img src="images/edit.png" /></a></th>

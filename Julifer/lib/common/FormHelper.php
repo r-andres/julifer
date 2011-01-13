@@ -4,9 +4,9 @@ class FormHelper {
 
 	
 	
-	function formSelectDOM  ( $name, $listElements, $selectedId ) {
+	function formSelectDOM  ( $label, $name, $listElements, $selectedId ) {
 	?>	
-	<p><label for="<?=$name?>"><?=$name?></label>
+	<p><label for="<?=$name?>"><?=$label?></label>
 	<select name="<?=$name?>" id="<?=$name?>"> 
 	<?php 
 		foreach ($listElements as $element) {
@@ -167,6 +167,10 @@ class FormHelper {
 </script>
 <?php 	
 
+	}
+	
+	function euroFormat ($amount) {
+		return number_format($amount, 2) . " &euro;";
 	}
 
 }
