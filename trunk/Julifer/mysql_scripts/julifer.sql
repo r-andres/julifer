@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS `facturas`;
 CREATE TABLE `facturas` (
   `id` int(11) NOT NULL auto_increment,
   `fecha` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `estado` text,
+  `tipo` text,
   `idvehiculo` text,
   `mecanica` text,
   `totalmecanica` double,
