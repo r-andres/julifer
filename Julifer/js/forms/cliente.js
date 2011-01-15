@@ -32,13 +32,12 @@ $(document).ready(function(){
 	},
 	onkeyup: true,
 			rules: {
-				preciounitario : {
-					regex: /^\d+\.?\d*$/
+				correoelectronicos : {
 				}
 			},
 			messages: {
-				descripcion: {
-					required: " "
+				correoelectronico: {
+					email: "Email incorrecto"
 				},	
 				preciounitario : {
 					required: " ",

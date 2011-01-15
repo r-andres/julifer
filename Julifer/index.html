@@ -4,7 +4,7 @@
 <meta name="description" content="" /> 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
 <title>Julifer</title> 
-<link href="css/site.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="css/site2.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/jquery_validate.js"></script>
 <script type="text/javascript" src="js/jquery.maskedinput.js"></script>
@@ -16,48 +16,47 @@
 <link rel="shortcut icon" href="images/favicon.ico" />
 <link rel="icon" type="image/gif"
 	href="images/animated_favicon1.gif" />
-	
 </head> 
-<body> 
-<div id="wrapper"> 
-	<div id="header-wrapper"> 
-		<div id="header"> 
-			<div id="logo"> 
-				<h1>K<a href="#"><span>ul</span>iFer</a></h1> 
-			</div> 
-			<div id="menu"> 
-				<ul>
-				    <li><a href="javascript:doActionToTarget('#content','MaterialList');">Materiales</a></li>
-                    <li><a href="javascript:doActionToTarget('#content','ClienteSearch');">Cliente</a></li>
-                    <li><a href="javascript:doActionToTarget('#content','VehiculoList');">Vehículos</a></li>
-                    <li><a href="javascript:doActionToTarget('#content','FacturaList');">Factura</a></li>
-				</ul> 
-			</div> 
-		</div> 
-	</div> 
-	<!-- end #header --> 
-	<div id="page"> 
-		<div id="content"> 
-		</div> 
-		<!-- end #content 
-		<div id="sidebar"> 
-			<ul> 
-				<li> 
-				</li>
-				<li id="versionWidget"> 
-				</li>  
-				<li id="spaceWidget"> 
-				</li> 
-			</ul> 
-		</div> 
-		end #sidebar --> 
-		<div style="clear: both;">&nbsp;</div> 
-	</div> 
-	<!-- end #page --> 
-</div> 
-<div id="footer"> 
-	<p>2010 MyXmindRepository. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p> 
-</div> 
-<!-- end #footer --> 
-</body> 
-</html> 
+
+<body>
+
+<div id="container">
+	<div id="intro">
+		<div id="pageHeader">
+			<p class="logo" />
+		</div>
+	</div>
+
+	<div id="page">
+	  <div id="content"></div> 
+	</div>
+		
+	<div id="linkList">
+		<div id="lselect">
+			<h3 class="select"><span>Elija una acci&oacute;n:</span></h3>
+			<ul>
+                <li>Clientes:
+                    <ul>
+                      <li class="action"><a href="javascript:doActionToTarget('#content','ClienteSearch');">Buscar</a></li>  
+                      <li class="action"><a href="javascript:doAction('ClienteForm','new','');">A&ntilde;adir</a></li>  
+                    </ul>
+                </li>
+                <li>Veh&iacute;culos:
+                    <ul>
+                      <li class="action"><a href="javascript:doActionToTarget('#content','VehiculoList');">Buscar</a></li>  
+                      <li class="action"><a href="javascript:doActionToTarget('#content','VehiculoList');">A&ntilde;adir</a></li>  
+                    </ul>
+                </li>
+                <li>Facturas:
+                    <ul>
+                      <li class="action"><a href="javascript:doActionToTarget('#content','FacturaList');">Buscar</a></li>  
+                      <li class="action"><a href="javascript:doActionToTarget('#content','FacturaList');">A&ntilde;adir</a></li>  
+                    </ul>
+                </li>
+			</ul>
+		</div>
+	</div>
+
+</div>
+</body>
+</html>
