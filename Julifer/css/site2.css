@@ -225,22 +225,25 @@ fieldset {
 }
 
 /***** JQuery Error style ************/
-#formDiv label.error {
-	display: none;
-	color: red;
-	font-style: italic;
-	font-weight: normal;
-	text-align: center;
-	margin-left: 11.5em;
-}
+/*#formDiv label.error {*/
+/*	display: none;*/
+/*	color: red;*/
+/*	font-style: italic;*/
+/*	font-weight: normal;*/
+/*	text-align: center;*/
+/*	margin-left: 11.5em;*/
+/*}*/
 
 label.error {
-	display: block;
+	display: none;
+	margin-left: 12.0em;
+	text-align: left;
 	color: red;
 	font-style: italic;
 	font-weight: normal;
+	height: 8px;
 }
-
+	
 #formDiv input.error {
 	border: 2px solid red;
 }

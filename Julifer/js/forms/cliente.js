@@ -24,24 +24,18 @@ $(document).ready(function(){
 			$("div.error").hide();
 		}
 	},
-	submitHandler: function() {
-		$.blockUI({ message: "<h3>Espere, por favor ...</h3>" });
-		$("div.error").hide();		 
-		sendForm('MaterialList','save',$("#id").val());
-		$.unblockUI(2000); 
+	submitHandler: function() {		 
+		sendForm('ClienteList','save',$("#id").val());
 	},
 	onkeyup: true,
 			rules: {
-				correoelectronicos : {
-				}
 			},
 			messages: {
 				correoelectronico: {
-					email: "Email incorrecto"
+					email: ""
 				},	
-				preciounitario : {
-					required: " ",
-					regex: "El precio debe ser un n&uacute;mero."
+				codpostal: {
+					number: ""
 				}
 			},
 			debug:true
