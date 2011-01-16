@@ -1,10 +1,27 @@
 <?php
 	$controller = new ClienteController();
+	// Errors
+	if (sizeof($controller->errs) > 0) { 
+		?>
+		<script language="javascript">
+			alert ("<?=$controller->errs[0]?>");
+		</script>
+		<?php
+	}
+	
+	// Message
+	if (sizeof($controller->message) > 0) { 
+		?>
+		<script language="javascript">
+			alert ("<?=$controller->message?>");
+		</script>
+		<?php
+	}
 ?>
 <fieldset>
 <legend>Lista de clientes:</legend>
 
-<table id="gradient-style">
+<table>
 <thead>
 <tr>
     <th>&nbsp;</th>
@@ -61,4 +78,10 @@
 ?>
 </tbody>
 </table> 
+
+<p>
+  <label for="buttons">&nbsp;</label>
+  <input type="button" value="Volver" class="button" onClick="javascript:doActionToTarget('#content','ClienteSearch');"/>
+</p>
+
 </fieldset>

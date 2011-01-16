@@ -17,6 +17,7 @@ function doAction(action, cmd, id) {
 }
 
 function sendForm(action, cmd, id) {
+	launchCursor();
 	var url = "widget.php";
 
 	if (action != null) {
@@ -29,6 +30,8 @@ function sendForm(action, cmd, id) {
 	$.post(url, $("#myForm").serialize(), function(data) {
 		$('#content').html(data);
 	});
+	
+	stopCursor();
 }
 
 /**
@@ -74,4 +77,19 @@ function doActionToTarget(target, action, cmd, id) {
 function show(idElment) {
 	document.getElementById(idElment).style.display = (document
 			.getElementById(idElment).style.display == 'none') ? '' : 'none';
+}
+
+/**
+ * Progress launching.
+ */
+function launchCursor() {
+	$.blockUI({ message: "<h3>Espere, por favor ...</h3>" });
+	$("div.error").hide();		 	
+}
+
+/**
+ * Progress stopping.
+ */
+function stopCursor() {
+	$.unblockUI(2000);		 	
 }

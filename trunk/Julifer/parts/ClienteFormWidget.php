@@ -9,7 +9,7 @@
 <div id="formDiv">
 <form id="myForm">
 <fieldset>
-<legend>Cliente</legend>
+<legend>Nuevo Cliente</legend>
 <div class="error" style="display:none;">
  <span></span><br clear="all"/>
 </div>
@@ -23,10 +23,16 @@
   <input type="text" name="apellidos" value="<?=$cliente->apellidos?>" class="required" />
 </p>
 <p><label for="direccion">Direcci&oacute;n</label> <input type="text" name="direccion" value="<?=$cliente->direccion?>" /></p>
-<p><label for="nif">Nif</label> <input type="text" name="nif" value="<?=$cliente->nif?>" /></p>
+<p>
+  <label for="nif">Nif</label> 
+  <input type="text" name="nif" value="<?=$cliente->nif?>" class="required" />
+</p>
 <p><label for="localidad">Localidad</label> <input type="text" name="localidad" value="<?=$cliente->localidad?>" /></p>
 <p><label for="provincia">Provincia</label> <input type="text" name="provincia" value="<?=$cliente->provincia?>" /></p>
-<p><label for="codpostal">C&oacute;digo Postal</label> <input type="text" name="codpostal" value="<?=$cliente->codpostal?>" /></p>
+<p>
+  <label for="codpostal">C&oacute;digo Postal</label> 
+  <input type="text" name="codpostal" id="codpostal" class="number" value="<?=$cliente->codpostal?>" /> 
+</p>
 <p>
   <label for="telefono">Tel&eacute;fono</label> 
   <input type="text" name="telefono" value="<?=$cliente->telefono?>"  class="required" />
@@ -40,9 +46,8 @@
 
 <p>
   <label for="buttons">&nbsp;</label>
-<!--   <input type="submit" value="Guardar" class="button" onClick="javascript:sendForm('ClienteList','save');"/>-->
   <input type="submit" value="Guardar" class="button" />
-  <input type="button" value="Volver" class="button" onClick="javascript:sendForm('ClienteList','search');"/>
+  <input type="button" value="Limpiar" class="button" onClick="javascript:resetForm();"/>
 </p>
 
 </fieldset>
