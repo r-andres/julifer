@@ -19,6 +19,7 @@ $files = array(
     'FacturaPdf' => 'parts/FacturaPdfWidget.php',
 	'VehiculoList' => 'parts/VehiculoListWidget.php',
     'VehiculoForm' => 'parts/VehiculoFormWidget.php',
+    'VehiculoSearch' => 'parts/VehiculoSearchWidget.php',
     'VehiculoView' => 'parts/VehiculoViewWidget.php',
 
 );
