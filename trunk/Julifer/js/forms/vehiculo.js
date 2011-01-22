@@ -24,25 +24,15 @@ $(document).ready(function(){
 			$("div.error").hide();
 		}
 	},
-	submitHandler: function() {
-		$.blockUI({ message: "<h3>Espere, por favor ...</h3>" });
-		$("div.error").hide();		 
-		sendForm('MaterialList','save',$("#id").val());
-		$.unblockUI(2000); 
+	submitHandler: function() {		 
+		sendForm('VehiculoList','save',$("#id").val());
 	},
 	onkeyup: true,
 			rules: {
-				preciounitario : {
-					regex: /^\d+\.?\d*$/
-				}
 			},
 			messages: {
-				descripcion: {
-					required: " "
-				},	
-				preciounitario : {
-					required: " ",
-					regex: "El precio debe ser un n&uacute;mero."
+				km: {
+					number: ""
 				}
 			},
 			debug:true
