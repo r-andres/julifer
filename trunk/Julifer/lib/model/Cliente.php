@@ -16,7 +16,7 @@ class Cliente {
 	}
 	
 	function toString () {
-		return $this->nif . " " .$this->nombre . " " . $this->apellidos ;
+		return $this->nombre . " " . $this->apellidos . " (". $this->nif.")" ;
 	}
 }
 ?>
