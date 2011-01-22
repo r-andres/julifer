@@ -12,8 +12,8 @@ class ClienteController {
 		$action = $_GET['cmd'];
 		$this->list = array();
 		$this->errs = array();
+		$this->message = '';
 		$updateList = true;
-		$message = "";
 
 		if ($action == 'delete') {
 			// Checking the user exists
@@ -25,23 +25,33 @@ class ClienteController {
 				$cliente = new Cliente();
 				$cliente->id =  $_GET['id'];
 				ClienteLogic::deleteCliente($cliente);
+				$this->message = "El cliente ".$cliente->nombre." ha sido dado de baja en el sistema.";
 			}
 		} else if ($action == 'edit') {
 			$this->cliente = ClienteLogic::retrieveCliente($_GET['id']);
 			$updateList = false;
 		}  else if ($action == 'save') {
+			$cliente = new Cliente();
+			$cliente->dump($_POST);
+
 			// Checking the client does not exist in the data base
-			$auxcliente = new Cliente();
-			$auxcliente->nif = $_POST['nif'];
-			ClienteLogic::searchClientes($this->list2, $auxcliente,  array());
-			if (sizeof($this->list2)>0) {
-				array_push($this->errs,
-				"Lo sentimos, pero ya hay un cliente con ese cif/nif");
-			} else {
-				$cliente = new Cliente();
-				$cliente->dump($_POST);
+			$alta = false;
+			// New vehicle: Checking the vehicle does not exist in the data base
+			if ($cliente->id == 0) {
+				$auxcliente = new Cliente();
+				$auxcliente->nif = $_POST['nif'];
+				ClienteLogic::searchClientes($this->list2, $auxcliente,  array());
+				if (sizeof($this->list2)>0) {
+					array_push($this->errs, "Lo sentimos, pero ya hay un cliente con ese cif/nif");
+				}
+				$alta = true;
+			}
+
+			// No erros.. go on
+			if (sizeof($this->errs) == 0) {
 				$this->cliente = ClienteLogic::saveCliente($cliente);
-				$message = "El cliente" + $cliente->nombre + " ha sido dado de alta en el sistema.";
+				$this->message = "El cliente ".$cliente->nombre.
+				$vehiculo->matricula.($alta?" ha sido dado de alta en el sistema.":" ha sido modificado correctamente.");
 			}
 		} else if ($action == 'search') {
 			// Searching by client parameters
