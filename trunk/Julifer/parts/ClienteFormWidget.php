@@ -9,7 +9,7 @@
 <div id="formDiv">
 <form id="myForm">
 <fieldset>
-<legend>Nuevo Cliente</legend>
+<legend>Ficha de Cliente</legend>
 <div class="error" style="display:none;">
  <span></span><br clear="all"/>
 </div>

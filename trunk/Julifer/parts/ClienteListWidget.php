@@ -10,7 +10,7 @@
 	}
 	
 	// Message
-	if (sizeof($controller->message) > 0) { 
+	if (!empty($controller->message) > 0) { 
 		?>
 		<script language="javascript">
 			alert ("<?=$controller->message?>");
