@@ -7,6 +7,11 @@ class VehiculoLogic {
 		$list = $dao->filteredList("","");
 	}
 
+	 function searchVehiculos (&$list, $vehiculo, $cliente) {
+		$dao = new VehiculoDAO(db__connect());
+		$list = $dao->search($vehiculo, $cliente);
+	}
+	
 	function deleteVehiculo(&$vehiculo) {
 		$dao = new VehiculoDAO(db__connect());
 		$dao->delete($vehiculo);
