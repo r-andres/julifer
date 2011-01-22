@@ -1,30 +1,46 @@
 <?php
 	$controller = new FacturaController();
+	
+	// Errors
+	if (sizeof($controller->errs) > 0) { 
+		?>
+		<script language="javascript">
+			alert ("<?=$controller->errs[0]?>");
+		</script>
+		<?php
+	}
+	
+	// Message
+	if (!empty($controller->message) > 0) { 
+		?>
+		<script language="javascript">
+			alert ("<?=$controller->message?>");
+		</script>
+		<?php
+	}
 ?>
 <table>
-<tbody>
+<thead>
 <tr>
-<th>fecha</th>
-<th>vehiculo</th>
-<th>tipo</th>
-<th>importe</th>
-<th>pagado</th>
-<th>estado</th>
-
-	<th><a href="javascript:doAction('FacturaForm','new','')"><img src="images/add.png" /></a></th>
+    <th>&nbsp;</th>
+	<th>Fecha</th>
+	<th>Veh&iacute;culo</th>
+	<th>Tipo</th>
+	<th>Importe</th>
+	<th>Pagado</th>
+	<th>Estado</th>
+	<th colspan="2">&nbsp;</th>
+  </tr>
+</thead>
 <?php  
-	$currentTitle = "";
     $counter = 0;
-   
-	    
-    
-    
     foreach ( $controller->list as $factura)  {
-
     	$pagado = "-";
     	$estado = "-";
+    	$tipo_ab ="PREP";
 
     	if ($factura->tipo == Factura::TIPO_FACTURA) {
+    		$tipo_ab ="FACT";
     		$pagado = FormHelper::euroFormat($factura->pagado);
     		$deuda = $factura->total() - $factura->pagado;
     		$estado = Factura::ESTADO_PAGADO;
@@ -33,34 +49,31 @@
     		}
     	}
 		
-    	
-    	
-		
 		$class='';
 		if ($counter % 2 == 0) {
-			$class = 'alt';
+			$class = 'odd';
 		}
 ?>
-		<tr>
-			<td class="<?=$class?>"><?=$factura->fecha?></td>
+		<tr class="<?=$class?>">
+		   <td><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')">
+		       <img src="images/edit.png" border="0" title="Modificar Factura" /></a></td>
+		   <td><?=$factura->fecha?></td>
+		   <td>
+			<img class="verVehiculo" id="verVehiculo_<?=$counter?>" src="images/go-bottom.png" border="0" />
+			<img class="ocultarVehiculo" id="ocultarVehiculo_<?=$counter?>" src="images/go-top.png" border="0" />
+			<div class="vehiculoDetalles" id="vehiculoDetalles_<?=$counter?>">
+			</div>
+			<input type="hidden" id="vehiculo_<?=$counter?>" value="<?=$factura->vehiculo?>"/>
+           </td>
 
-<td class="<?=$class?>" >
-<img class="verVehiculo" id="verVehiculo_<?=$counter?>" src="images/go-bottom.png" border="0" />
-<img class="ocultarVehiculo" id="ocultarVehiculo_<?=$counter?>" src="images/go-top.png" border="0" />
-<div class="vehiculoDetalles" id="vehiculoDetalles_<?=$counter?>">
-</div>
-<input type="hidden" id="vehiculo_<?=$counter?>" value="<?=$factura->vehiculo?>"/>
-</td>
-
-
-<td class="<?=$class?>"><?=$factura->tipo?></td>
-<td nowrap="yes" class="<?=$class?>"><?=FormHelper::euroFormat($factura->total())?></td>
-<td nowrap="yes" class="<?=$class?>"><?=$pagado?></td>
-<td class="<?=$class?>"><?=$estado?></td>
-
-			<th><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')"><img src="images/delete.png" /></a></th>
-			<th><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')"><img src="images/edit.png" /></a></th>
-			<th><a href="javascript:downloadAction('FacturaPdf','edit','<?=$factura->id?>')"><img src="images/disk.png" /></a></th>
+		<td><?=$tipo_ab?></td>
+		<td nowrap="yes"><?=FormHelper::euroFormat($factura->total())?></td>
+		<td nowrap="yes"><?=$pagado?></td>
+		<td><?=$estado?></td>
+		<td><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')">
+		    <img src="images/delete.png" border="0" title="Borrar Factura" /></a></td>
+		<td><a href="javascript:downloadAction('FacturaPdf','edit','<?=$factura->id?>')">
+		    <img src="images/disk.png" border="0" title="Generar Factura" /></a></td>
 		</tr>
 <?php  
 		$counter++;
@@ -105,15 +118,10 @@
 	});
 
 	function cargaVehiculo (id, vehiculo) {
-
 		var url = "widget.php?action=VehiculoView&cmd=edit&id=" + vehiculo;
 		$.get(url, function(data) {
 			  $('#vehiculoDetalles_' + id ).html(data);
 			  $("#vehiculoDetalles_" + id).slideDown("slow");
 		});
-		
-		
-		
-		
 	}
 </script>

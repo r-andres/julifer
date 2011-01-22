@@ -1,41 +1,79 @@
 <?php
 	$controller = new VehiculoController();
 	
+	// Errors
+	if (sizeof($controller->errs) > 0) { 
+		?>
+		<script language="javascript">
+			alert ("<?=$controller->errs[0]?>");
+		</script>
+		<?php
+	}
+	
+	// Message
+	if (!empty($controller->message) > 0) { 
+		?>
+		<script language="javascript">
+			alert ("<?=$controller->message?>");
+		</script>
+		<?php
+	}
 ?>
-<table>
-<tbody>
-<tr>
-<th>matricula</th>
-<th>marca</th>
-<th>modelo</th>
-<th>cliente</th>
-<th>km</th>
-<th>color</th>
-<th>numero bastidor</th>
+<fieldset>
+<legend>Lista de veh&iacute;culos:</legend>
 
-	<th><a href="javascript:doAction('VehiculoForm','new','')"><img src="images/add.png" /></a></th>
+<table>
+<thead>
+<tr>
+    <th>&nbsp;</th>
+	<th>Matr&iacute;cula</th>
+	<th>Marca</th>
+	<th>Modelo</th>
+	<th>Cliente</th>
+	<th>Color</th>
+	<th>&nbsp;</th>
+	</tr>
+</thead>
+<tbody>
+
 <?php  
-	$currentTitle = "";
-        $counter = 0;
+    $counter = 0;
 	foreach ( $controller->list as $vehiculo)  {
+		$idInnerTable="innerTable".$counter;
 		$tm = time() . $counter;
 		$class='';
 		if ($counter % 2 == 0) {
-			$class = 'alt';
+			$class = 'odd';
 		}
 ?>
-		<tr>
-			<td class="<?=$class?>"><?=$vehiculo->matricula?></td>
-<td class="<?=$class?>"><?=$vehiculo->marca?></td>
-<td class="<?=$class?>"><?=$vehiculo->modelo?></td>
-<?=FormHelper::tableDataDOM("cliente", $vehiculo->cliente, $tm)?>
-<td class="<?=$class?>"><?=$vehiculo->km?></td>
-<td class="<?=$class?>"><?=$vehiculo->color?></td>
-<td class="<?=$class?>"><?=$vehiculo->numerobastidor?></td>
+		<tr class="<?=$class?>">
+		  <td><a href="javascript:doAction('VehiculoForm','edit','<?=$vehiculo->id?>')">
+		    <img src="images/edit.png" border="0" title="Modificar Ficha de Veh&iacute;culo" /></a></td>
+		
+			<td><?=$vehiculo->matricula?>
+			    <a href="javascript:show('<?=$idInnerTable?>')">
+			    <img src="images/cliente_more.png" border="0" title="Ver Resto de la Ficha de Veh&iacute;culo" /></a>
+			</td>
+		
+			<td><?=$vehiculo->marca?></td>
+			<td><?=$vehiculo->modelo?></td>
+			<?=FormHelper::tableDataDOM("cliente", $vehiculo->cliente, $tm)?>
+			<td><?=$vehiculo->color?></td>
 
-			<th><a href="javascript:doAction('VehiculoList','delete','<?=$vehiculo->id?>')"><img src="images/delete.png" /></a></th>
-			<th><a href="javascript:doAction('VehiculoForm','edit','<?=$vehiculo->id?>')"><img src="images/edit.png" /></a></th>
+			<td><a href="javascript:doAction('VehiculoList','delete','<?=$vehiculo->id?>')">
+		    <img src="images/delete.png" border="0" title="Borrar Cliente"  /></a></td>
 		</tr>
+		
+		<tr class="<?=$class?>" id="<?=$idInnerTable?>" style="display:none">
+		<td></td>
+		<td colspan="5"><fieldset>
+			<p><label class="leftlabel">Km:</label><label class="rightlabel"><?=$vehiculo->km?></label></p>
+			<p><label class="leftlabel">N&uacute;mero bastidor:</label><label class="rightlabel"><?=$vehiculo->numerobastidor?></label></p>
+		</fieldset>
+		</td>
+		
+		<td></td>
+	</tr>
 <?php  
 		$counter++;
 	}  
@@ -44,53 +82,5 @@
 </tbody>
 </table> 
 <?=FormHelper::tableDataScript("cliente", "ClienteView")?>
-<!-- 
-<script>
-	$(document).ready(function(){
 
-		$(".ocultarCliente").hide();
-		$(".clienteDetalles").hide();
-		
-		$(".verCliente" ).click(function(){
-			var id = $(this).attr("id");
-			id = id.slice(id.indexOf("_") + 1);
-			$("#ocultarCliente_" + id ).show();
-			$("#verCliente_" + id).hide();
-			var cliente = $("#cliente_" + id).attr("value");
-
-			if ( $("#cliente_" + id).attr("loaded") != "yes" ) {
-				cargaCliente (id, cliente);
-				$("#cliente_" + id).attr("loaded", "yes");
-			} else {
-				$("#clienteDetalles_" + id).slideDown("slow");
-			}
-		});
-
-		$(".ocultarCliente").click(function(){
-			var id = $(this).attr("id");
-			id = id.slice(id.indexOf("_") + 1);
-			$("#ocultarCliente_" + id ).hide();
-			$("#verCliente_" + id).show();
-			$("#clienteDetalles_" + id).slideUp("slow");
-			
-			}
-		);
-
-		
-		
-	});
-
-	function cargaCliente (id, cliente) {
-
-		var url = "widget.php?action=ClienteView&cmd=edit&id=" + cliente;
-		$.get(url, function(data) {
-			  $('#clienteDetalles_' + id ).html(data);
-			  $("#clienteDetalles_" + id).slideDown("slow");
-		});
-		
-		
-		
-		
-	}
-</script>
- -->
+</fieldset>
