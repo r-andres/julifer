@@ -2,7 +2,7 @@
 	$controller = new FacturaController();
 	$factura= $controller->factura;
 	
-	$listaEstados = array (Factura::TIPO_PRESUPUESTO, Factura::TIPO_FACTURA);
+	$listaEstados = array ( Factura::TIPO_FACTURA, Factura::TIPO_PRESUPUESTO);
 ?>
 
 <div id="formDiv">
@@ -10,7 +10,7 @@
 <fieldset>
 <legend>Buscar Facturas:</legend>
 <?=FormHelper::formSelectDOM("tipo","tipo", $listaEstados , $factura->tipo )?> 
-<p><label for="fecha">Fecha</label> <input type="text" name="fecha" value="<?=$factura->fecha?>" /></p>
+<p><label for="fecha">Fecha (dd-mm-yyyy)</label> <input type="text" name="fecha" value="<?=$factura->fecha?>" /></p>
 
 <p style="height:12px;"></p>
 

@@ -22,21 +22,21 @@ class FacturaDAO  {
 		#create new vo and call getFromResult
 		#return vo
 
-		$list = $this->filteredList(" id = '$id' ", "");
+		$list = $this->filteredList(" $this->TABLE_NAME.id = '$id' ", "");
 		return  $list[0];
 
 	}
 
 	function delete(&$vo) {
 
-		$query = "DELETE FROM  $this->TABLE_NAME WHERE id = $vo->id ";
+		$query = "DELETE FROM  $this->TABLE_NAME WHERE $this->TABLE_NAME.id = $vo->id ";
 		$result = mysql_query($query, $this->conn) or db__showError();
 	}
 
 	function filteredList ($filter, $orderby) {
 		$list =  array () ;
-		$query = "SELECT * , DATE_FORMAT(fecha,  '%Y-%m-%d') as cfecha  FROM  $this->TABLE_NAME ";
-		if($filter != "")
+	    $query = "SELECT facturas.*, DATE_FORMAT(facturas.fecha,  '%d-%m-%Y') as cfecha FROM  $this->TABLE_NAME";
+	    if($filter != "")
 		{
 			$query .= " WHERE $filter ";
 		}
@@ -44,7 +44,6 @@ class FacturaDAO  {
 		{
 			$query .= " ORDER BY  $orderby ";
 		}
-			
 		$result = mysql_query($query,$this->conn) or db__showError();
 
 		if ($myrow = mysql_fetch_array($result)) {
@@ -76,7 +75,6 @@ class FacturaDAO  {
 	 $vo->descuentoPintura = $result['descuentopintura'];
 	 $vo->franquicia = $result['franquicia'];
 	 $vo->pagado = $result['pagado'];
-	 $vo->matricula = $result['matricula'];
 	   
 	 $list =  array () ;
 	 $query2 = "SELECT * FROM  materialFacturados WHERE idfactura = $vo->id ";
@@ -95,6 +93,19 @@ class FacturaDAO  {
 	 }
 	 mysql_free_result($result2);
 	 $vo->servicios = $list;
+	 
+	 // Matricula
+	 if (!empty($vo->vehiculo)){
+		 $query3 = "SELECT matricula FROM  vehiculos WHERE id =$vo->vehiculo ";
+		 
+		 $result3 = mysql_query($query3, $this->conn) or db__showError();
+		 if ($myrow3 = mysql_fetch_array($result3)) {
+		 	do {
+		 		$vo->matricula = $myrow3['matricula'];
+		 	} while ($myrow3 = mysql_fetch_array($result3));
+		 }
+		 mysql_free_result($result3);	
+	 } 
 	}
 
 	function update(&$vo) {
@@ -119,7 +130,7 @@ class FacturaDAO  {
 		$result = mysql_query($query, $this->conn) or db__showErrorCause($query);
 		$idFactura = mysql_insert_id($this->conn);
 		$this->insertServiciosFacturados($idFactura, $vo->servicios, false);
-			
+		$vo->id = $idFactura;
 	}
 
 
@@ -166,7 +177,7 @@ class FacturaDAO  {
 			}
 
 			if (!empty($where)) {
-				$where .= " or ";
+				$where .= " and ";
 			}
 			$where .= "$vo_prefix.$key like '%$value%'";
 		}
@@ -178,7 +189,7 @@ class FacturaDAO  {
 			}
 
 			if (!empty($where)) {
-				$where .= " or ";
+				$where .= " and ";
 			}
 			$where .= "$cliente_prefix.$key like '%$value%'";
 		}
@@ -190,7 +201,7 @@ class FacturaDAO  {
 			}
 
 			if (!empty($where)) {
-				$where .= " or ";
+				$where .= " and ";
 			}
 
 			$where .= "$vehicle_prefix.$key like '%$value%'";
@@ -198,7 +209,7 @@ class FacturaDAO  {
 
 		// Defining final query
 		$list =  array () ;
-		$query = "SELECT distinct facturas.*, DATE_FORMAT(facturas.fecha,  '%d-%m-%y') as cfecha, vehiculos.matricula FROM  $this->TABLE_NAME, vehiculos, clientes ";
+		$query = "SELECT distinct facturas.*, DATE_FORMAT(facturas.fecha,  '%d-%m-%Y') as cfecha FROM  $this->TABLE_NAME, vehiculos, clientes ";
 		if ($where != "") {
 			// Joins
 			$where .= " and vehiculos.idcliente=clientes.id and facturas.idvehiculo=vehiculos.id";
@@ -215,6 +226,7 @@ class FacturaDAO  {
 			} while ($myrow = mysql_fetch_array($result));
 		}
 		mysql_free_result($result);
+		
 		return $list;
 	}
 }

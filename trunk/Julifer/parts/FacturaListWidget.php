@@ -19,6 +19,13 @@
 		<?php
 	}
 ?>
+<script type="text/javascript">
+if ("<?=$_GET['cmd']?>" == 'save' && confirm("Por favor, confirme si desea imprimir la factura.")) {
+	downloadAction('FacturaPdf','edit','<?=$controller->factura->id?>');
+}
+
+</script>
+
 <fieldset>
 <legend>Lista de facturas:</legend>
 
@@ -79,7 +86,7 @@
 		<td><a href="javascript:doAction('FacturaList','delete','<?=$factura->id?>')">
 		    <img src="images/delete.png" border="0" title="Borrar Factura" /></a></td>
 		<td><a href="javascript:downloadAction('FacturaPdf','edit','<?=$factura->id?>')">
-		    <img src="images/disk.png" border="0" title="Generar Factura" /></a></td>
+		    <img src="images/printer.png" border="0" title="Generar Factura" /></a></td>
 		</tr>
 <?php  
 		$counter++;

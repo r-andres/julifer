@@ -140,7 +140,7 @@ class VehiculoDAO  {
 			}
 
 			if (!empty($where)) {
-				$where .= " or ";
+				$where .= " and ";
 			}
 			$where .= "$vo_prefix.$key like '%$value%'";
 		}
@@ -152,7 +152,7 @@ class VehiculoDAO  {
 			}
 
 			if (!empty($where)) {
-				$where .= " or ";
+				$where .= " and ";
 			}
 			$where .= "$cliente_prefix.$key like '%$value%'";
 		}
@@ -168,8 +168,7 @@ class VehiculoDAO  {
 			$query .= " WHERE $where";
 		}
 			
-			
-		echo $query;
+		
 		$result = mysql_query($query,$this->conn) or db__showError();
 
 		if ($myrow = mysql_fetch_array($result)) {

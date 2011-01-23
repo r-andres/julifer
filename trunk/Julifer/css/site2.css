@@ -636,3 +636,10 @@ td {
 tbody tr.odd td {
 	background: transparent url(../images/tr_bg.png) repeat top left;
 }
+
+img.cover {
+	text-align: center;
+	display: block;
+	margin: auto;
+	width: 75%;
+}

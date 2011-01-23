@@ -144,7 +144,7 @@ class ClienteDAO  {
    		}
    		
    		if ($counter2 > 0 || $counter > 0) {
-   			$where .= " or ";
+   			$where .= " and ";
    		}
    		
    		$where .= "$vehicle_prefix.$key like '%$value%'";

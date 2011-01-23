@@ -32,8 +32,13 @@ class FacturaController {
 			$factura = new Factura();
 			$factura->dump($_POST);
 			FacturaLogic::saveFactura($factura);
-				
-			$this->message = "La factura ha sido realizada correctamente.";
+			
+			if ($factura->id == 0){
+				$this->message = "La factura ha sido realizada correctamente";
+			} else {
+				$this->message = "La factura ha sido modificada correctamente";
+			}
+			$this->factura = $factura;
 		} else if ($action == 'search') {
 			// Searching by client parameters
 			$cliente = new Cliente();
