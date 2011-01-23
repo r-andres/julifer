@@ -7,7 +7,6 @@ $files = array(
     'ClienteForm' => 'parts/ClienteFormWidget.php',
     'ClienteSearch' => 'parts/ClienteSearchWidget.php',
     'ClienteView' => 'parts/ClienteViewWidget.php',
-	'Cover' => 'parts/Cover.php',
     'MaterialList' => 'parts/MaterialListWidget.php',
     'MaterialForm' => 'parts/MaterialFormWidget.php',
     'FacturaList' => 'parts/FacturaListWidget.php',
