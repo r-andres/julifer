@@ -10,7 +10,6 @@
 <fieldset>
 <legend>Buscar Facturas:</legend>
 <?=FormHelper::formSelectDOM("tipo","tipo", $listaEstados , $factura->tipo )?> 
-<p><label for="fecha">N&uacute;mero</label> <input type="text" name="fecha" value="<?=$factura->id?>" /></p>
 <p><label for="fecha">Fecha</label> <input type="text" name="fecha" value="<?=$factura->fecha?>" /></p>
 
 <p style="height:12px;"></p>

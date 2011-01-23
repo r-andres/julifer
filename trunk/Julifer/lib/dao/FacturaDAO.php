@@ -64,11 +64,11 @@ class FacturaDAO  {
 
 
 	function getFromResult(&$vo, $result) {
-		$vo->id = $result['id'];
-		$vo->fecha = $result['cfecha'];
-		$vo->tipo = $result['tipo'];
-		$vo->vehiculo = $result['idvehiculo'];
-		$vo->mecanica = $result['mecanica'];
+	 $vo->id = $result['id'];
+	 $vo->fecha = $result['cfecha'];
+	 $vo->tipo = $result['tipo'];
+	 $vo->vehiculo = $result['idvehiculo'];
+	 $vo->mecanica = $result['mecanica'];
 	 $vo->totalMecanica = $result['totalmecanica'];
 	 $vo->descuentoMecanica = $result['descuentomecanica'];
 	 $vo->pintura = $result['pintura'];
@@ -76,7 +76,8 @@ class FacturaDAO  {
 	 $vo->descuentoPintura = $result['descuentopintura'];
 	 $vo->franquicia = $result['franquicia'];
 	 $vo->pagado = $result['pagado'];
-	  
+	 $vo->matricula = $result['matricula'];
+	   
 	 $list =  array () ;
 	 $query2 = "SELECT * FROM  materialFacturados WHERE idfactura = $vo->id ";
 	 $result2 = mysql_query($query2, $this->conn) or db__showError();
@@ -197,13 +198,13 @@ class FacturaDAO  {
 
 		// Defining final query
 		$list =  array () ;
-		$query = "SELECT distinct facturas.* , DATE_FORMAT(facturas.fecha,  '%Y-%m-%d') as cfecha FROM  $this->TABLE_NAME, vehiculos, clientes ";
+		$query = "SELECT distinct facturas.*, DATE_FORMAT(facturas.fecha,  '%d-%m-%y') as cfecha, vehiculos.matricula FROM  $this->TABLE_NAME, vehiculos, clientes ";
 		if ($where != "") {
 			// Joins
-			$where .= " and vehiculos.idcliente=clientes.id && facturas.idvehiculo=vehiculos.id";
+			$where .= " and vehiculos.idcliente=clientes.id and facturas.idvehiculo=vehiculos.id";
 			$query .= " WHERE $where";
 		}
-		echo $query;
+
 		$result = mysql_query($query,$this->conn) or db__showError();
 
 		if ($myrow = mysql_fetch_array($result)) {
