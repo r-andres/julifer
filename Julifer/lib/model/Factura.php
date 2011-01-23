@@ -10,7 +10,11 @@ class Factura {
 	
 	function dump ($arr) {
 		$this->id = $arr['id'];
-		$this->fecha = $arr['fecha'];
+		// Formating fecha
+		if (!empty($arr['fecha'])){
+	 		$fechaComp = explode("-", $arr['fecha']);
+			$this->fecha =$fechaComp[2]."-".$fechaComp[1]."-".$fechaComp[0];
+		}
 		$this->tipo = $arr['tipo'];
 		$this->vehiculo = $arr['vehiculo'];
 		$this->servicios =  array ();
@@ -51,7 +55,10 @@ class Factura {
 	
 	function searchDump ($arr) {		
 		$this->id = $arr['id'];
-		$this->fecha = $arr['fecha'];
+		if (!empty($arr['fecha'])){
+	 		$fechaComp = explode("-", $arr['fecha']);
+			$this->fecha =$fechaComp[2]."-".$fechaComp[1]."-".$fechaComp[0];
+		}
 		$this->tipo = $arr['tipo'];
 		$this->pagado = $arr['pagado'] == ""?0:$arr['pagado'];
 		$this->franquicia = $arr['franquicia'] == ""?0:$arr['franquicia'];

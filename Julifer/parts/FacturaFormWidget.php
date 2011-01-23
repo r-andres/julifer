@@ -11,10 +11,10 @@
 	
 	if ($fecha == '') {
 		$hoy = getdate();
-		$fecha = $hoy['year']."-".$hoy['mon']."-".$hoy['mday'];
+		$fecha = $hoy['mday']. "-".$hoy['mon']."-".$hoy['year'];
 	}
 	
-	$listaEstados = array (Factura::TIPO_PRESUPUESTO, Factura::TIPO_FACTURA);
+	$listaEstados = array ( Factura::TIPO_FACTURA, Factura::TIPO_PRESUPUESTO);
 
 ?>
 <script type="text/javascript" src="js/forms/factura.js"></script>
@@ -33,10 +33,10 @@
   <input type="text" name="pagado" value="<?=$factura->pagado?>" />
 </p>
 <p>
-  <label for="fecha">Fecha</label> 
+  <label for="fecha">Fecha (dd-mm-yyyy)</label> 
   <input type="text" name="fecha" value="<?=$fecha?>" />
 </p>
-<?=FormHelper::formFieldDOM("vehiculo", $listaVehiculos , $factura->cliente )?> 
+<?=FormHelper::formFieldDOM("vehiculo", $listaVehiculos , $factura->vehiculo )?> 
 
 <p>
   <label for="divMateriales">Materiales</label>
