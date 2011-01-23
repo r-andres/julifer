@@ -60,7 +60,8 @@ p {
 	background-image: url("../images/abajo.gif");
 	background-repeat: repeat-x;
 	background-position: bottom;
-	width: 740px;
+/*	width: 740px;*/
+	width: 90%;
 	height: 100%;
 	border: 1px solid #5F5F5F;
 	border-bottom: 0;
@@ -192,7 +193,7 @@ input {
 	width: 15em;
 	border: 1px solid #ddd;
 	background: #fafafa;
-	margin-left: 0.5em;
+	margin-left: 0;
 	margin-right: 0.5em;
 	font: bold 0.95em arial, sans-serif;
 	-moz-border-radius: 0.4em;
@@ -594,6 +595,23 @@ table {
 	border: 2px solid #900;
 	font-size: 90%;
 	border-collapse: collapse;
+	
+	width:90%; 
+	margin-left:5%;
+	margin-right:5%;
+	margin-top:1%;
+	margin-bottom:1%;
+}
+
+table#small {
+	color: #fff;
+	background: #C00;
+	border-collapse: collapse;
+	border: 2px solid #900;
+	font-size: 90%;
+	border-collapse: collapse;
+	width:50%; 
+	margin:0;
 }
 
 thead {
@@ -603,7 +621,7 @@ thead {
 thead th {
 	padding: .5em .5em .5em;
 	border-bottom: 1px dotted #FFF;
-	text-align: left;
+	text-align: center;
 }
 
 thead tr {
@@ -612,6 +630,7 @@ thead tr {
 
 td {
 	padding: .5em .5em;
+	text-align: center;
 }
 
 tbody tr.odd td {

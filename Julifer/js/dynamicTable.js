@@ -20,7 +20,7 @@ RecordList.prototype = {
  
         /* Menu */
         var newItemCmd = document.createElement('div');
-        newItemCmd.innerHTML = "(+)"
+        newItemCmd.innerHTML = "<img src='images/add.png' title='Añadir material'>";
         newItemCmd.addEventListener('click', this.cmdAddNewServicio  , false); 
         newItemCmd.ref = this;
         widget.appendChild(newItemCmd);
@@ -73,6 +73,7 @@ RecordList.prototype = {
     },
     
     addTableHeader : function () {
+    	
 		var header = document.createElement('tr');
         var cellCantidad = document.createElement('th');
     	var cellServicio = document.createElement('th');
@@ -82,8 +83,8 @@ RecordList.prototype = {
     	
     	cellCantidad.innerHTML = "Cantidad";
     	cellServicio.innerHTML = "Descripción";
-    	cellPrecio.innerHTML = "Precio Unitario";
-    	cellDescuento.innerHTML = "Descuento";
+    	cellPrecio.innerHTML = "Precio<br>(Unidad)";
+    	cellDescuento.innerHTML = "Descuento<br>(%)";
     	
     	header.appendChild(cellCantidad);
     	header.appendChild(cellServicio);
@@ -91,6 +92,7 @@ RecordList.prototype = {
     	header.appendChild(cellDescuento);
     	header.appendChild(cellDelete);
     	this.tableHeader = header;
+    	
     	this.listWidget.appendChild(header);
     },
     
@@ -118,9 +120,9 @@ Servicio.prototype = {
     buildUi : function () {
 	
 		var index = this.listObj.counter;
-		
 		var rowEdit = document.createElement('tr');
-        var cellCantidad = document.createElement('td');
+
+		var cellCantidad = document.createElement('td');
     	var cellServicio = document.createElement('td');
     	var cellPrecio = document.createElement('td');
     	var cellDescuento = document.createElement('td');
@@ -128,15 +130,22 @@ Servicio.prototype = {
     	
     	var cantidadField = document.createElement('input');
     	cantidadField.name= "cantidad_" + index;
+    	cantidadField.style.width="30px";
+    	 
     	var servicioField = document.createElement('input');
     	servicioField.name= "material_" + index;
+    	servicioField.style.width="180px";
+    	
     	var precioField = document.createElement('input');
     	precioField.name= "precio_" + index;
+    	precioField.style.width="40px";
+    	
     	var descuentoField = document.createElement('input');
     	descuentoField.name= "descuento_" + index;
+    	descuentoField.style.width="30px";
     	
     	var deleteButton = document.createElement('div');
-    	deleteButton.innerHTML = "(X)";
+    	deleteButton.innerHTML = "<img src='images/delete.png' title='Borrar material'>";
     	deleteButton.addEventListener('click', this.cmdDelete  , false); 
     	deleteButton.listRef = this.listObj;
     	deleteButton.index = index;

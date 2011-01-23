@@ -50,13 +50,13 @@ CREATE TABLE `facturas` (
   `tipo` text,
   `idvehiculo` text,
   `mecanica` text,
-  `totalmecanica` double,
-  `descuentomecanica` double,
+  `totalmecanica` double default 0,
+  `descuentomecanica` double default 0,
   `pintura` text,
-  `totalpintura` double,
-  `descuentopintura` double,
-  `pagado` double,
-  `franquicia` double,
+  `totalpintura` double default 0,
+  `descuentopintura` double default 0,
+  `pagado` double default 0,
+  `franquicia` double default 0,
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 

@@ -1,6 +1,7 @@
 <?php
 class Factura {
-	var $id, $fecha, $estado, $vehiculo, $servicios, $mecanica, $totalMecanica, $descuentoMecanica,  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado;
+	var $id, $fecha, $estado, $vehiculo, $servicios, $mecanica, $totalMecanica, $descuentoMecanica,  
+	  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado, $matricula;
 	const TIPO_FACTURA = "FACTURA";
 	const TIPO_PRESUPUESTO = "PRESUPUESTO";
 	const ESTADO_PAGADO = "PAGADO";

@@ -3,7 +3,7 @@ $controller = new ClienteController();
 $cliente= $controller->cliente;
 
 ?>
-<table>
+<table id="small">
 	<tbody>
 		<tr>
 			<th>Nombre Completo</th>

@@ -19,11 +19,15 @@
 		<?php
 	}
 ?>
+<fieldset>
+<legend>Lista de facturas:</legend>
+
 <table>
 <thead>
 <tr>
     <th>&nbsp;</th>
 	<th>Fecha</th>
+	<th>Matr&iacute;cula</th>
 	<th>Veh&iacute;culo</th>
 	<th>Tipo</th>
 	<th>Importe</th>
@@ -32,6 +36,7 @@
 	<th colspan="2">&nbsp;</th>
   </tr>
 </thead>
+<tbody>
 <?php  
     $counter = 0;
     foreach ( $controller->list as $factura)  {
@@ -58,6 +63,7 @@
 		   <td><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')">
 		       <img src="images/edit.png" border="0" title="Modificar Factura" /></a></td>
 		   <td><?=$factura->fecha?></td>
+		   <td><?=$factura->matricula?></td>
 		   <td>
 			<img class="verVehiculo" id="verVehiculo_<?=$counter?>" src="images/go-bottom.png" border="0" />
 			<img class="ocultarVehiculo" id="ocultarVehiculo_<?=$counter?>" src="images/go-top.png" border="0" />
@@ -82,6 +88,8 @@
 ?>
 </tbody>
 </table> 
+</fieldset>
+
 <script>
 	$(document).ready(function(){
 
