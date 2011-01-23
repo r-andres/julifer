@@ -226,23 +226,14 @@ fieldset {
 }
 
 /***** JQuery Error style ************/
-/*#formDiv label.error {*/
-/*	display: none;*/
+label.error {
+	display: none;
+/*	margin-left: 12.0em;*/
+/*	text-align: left;*/
 /*	color: red;*/
 /*	font-style: italic;*/
 /*	font-weight: normal;*/
-/*	text-align: center;*/
-/*	margin-left: 11.5em;*/
-/*}*/
-
-label.error {
-	display: none;
-	margin-left: 12.0em;
-	text-align: left;
-	color: red;
-	font-style: italic;
-	font-weight: normal;
-	height: 8px;
+/*	height: 8px;*/
 }
 	
 #formDiv input.error {
