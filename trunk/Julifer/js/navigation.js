@@ -52,8 +52,11 @@ function downloadAction(action, cmd, id) {
 	if (cmd != null) {
 		url += "&cmd=" + cmd + "&id=" + id;
 	}
-	window.location.href = url;
-	// $("#content").load(url);
+	
+	window.open(url, '_blank');
+    
+	// Descargar en la misma ventana: window.location.href = url;
+	// Descargar en un elemento $("#content").load(url);
 }
 
 function doActionToTarget(target, action, cmd, id) {
