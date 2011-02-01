@@ -1,6 +1,7 @@
 <?php
 
 /*** begin session ***/
+session_save_path("session_tmp" ); 
 session_start();
 
 require_once("config.inc");
