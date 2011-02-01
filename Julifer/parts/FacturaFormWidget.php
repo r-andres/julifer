@@ -3,9 +3,6 @@
 	$listaVehiculos = array(); 
 	VehiculoLogic::listVehiculos($listaVehiculos);
 	
-	$listaMateriales = array(); 
-	MaterialLogic::listMateriales($listaMateriales);
-	
 	$factura= $controller->factura;
 	$fecha = $factura->fecha;
 	
