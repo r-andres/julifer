@@ -14,7 +14,6 @@
  require_once("$ROOT/lib/dao/UsuarioDAO.php"); 
   
  require_once("$ROOT/lib/model/Materialfacturado.php"); 
- require_once("$ROOT/lib/model/Material.php"); 
  require_once("$ROOT/lib/model/Factura.php"); 
  require_once("$ROOT/lib/model/Vehiculo.php"); 
  require_once("$ROOT/lib/model/Cliente.php"); 
