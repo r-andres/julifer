@@ -81,6 +81,18 @@ CREATE TABLE `materiales` (
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `usuarios`;
+	CREATE TABLE `usuarios` (
+	`id` int NOT NULL auto_increment,
+	`username` varchar(20) NOT NULL default '',
+	`password` char(32) binary NOT NULL default '',
+	`session` char(32) binary NOT NULL default '',
+	`ip` varchar(15) binary NOT NULL default '',
+	PRIMARY KEY (`id`),
+	UNIQUE KEY username (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+
 INSERT INTO `clientes` VALUES (7,'11234567N','Alejandro','Perez Nonao','C/ Luis Piernas 34, 4º D','Madrid','Madrid','20017','755 66 43 23','aperez@telco.es'),(8,'32844234F','Jaime','Berlanga','Avda de los poblados 103, Bajo C','Madrid','Madrid','28012','765 32 11 32','minoico@gmail.com');
 INSERT INTO `vehiculos` VALUES (7,'M-3256-PG','Talbot','Horizon','Blanco','250000','NMK_3453_56','7'),(8,'0763 HJV','Mercedes','Vito 1.9D','Rojo','120000','NMK_3453_57','7');
 INSERT INTO `materiales` VALUES (7,'Aceite sintetico 3l',23.45),(8,'Neumatico Pirelli 16\"',120.15);
