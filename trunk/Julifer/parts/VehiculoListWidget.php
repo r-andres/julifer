@@ -66,10 +66,11 @@
 		
 		<tr class="<?=$class?>" id="<?=$idInnerTable?>" style="display:none">
 		<td></td>
-		<td colspan="5"><fieldset>
-			<p><label class="leftlabel">Km:</label><label class="rightlabel"><?=$vehiculo->km?></label></p>
-			<p><label class="leftlabel">N&uacute;mero bastidor:</label><label class="rightlabel"><?=$vehiculo->numerobastidor?></label></p>
-		</fieldset>
+		<td colspan="5">
+		   <table id="small">
+				<tr><th align="right">Número de Km:</th><td align="left"><?=$vehiculo->km?></td></tr>
+				<tr><th align="right">N&uacute;mero bastidor:</th><td align="left"><?=$vehiculo->numerobastidor?></td></tr>
+			</table>
 		</td>
 		
 		<td></td>

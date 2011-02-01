@@ -13,7 +13,7 @@ class PDF extends TablaCompPDF
 	protected $anchoPagina = 210;
 	protected $margenX  = 10;
 	protected $margenPie = 55;
-	protected $empresa, $factura,  $listaServicios;
+	protected $empresa, $factura;
 	protected $anclaje_1, $anclaje_2;
 	
 	protected $totalMateriales = 0;
@@ -22,14 +22,12 @@ class PDF extends TablaCompPDF
 	
 	
 	
-	function PDF ($empresa, $factura , $listaServicios, $orientation='P',$unit='mm',$format='A4') {
+	function PDF ($empresa, $factura , $orientation='P',$unit='mm',$format='A4') {
    		$this->FPDF($orientation,$unit,$format);
 		$this->anclaje_1 =  $this->margenX +  ((($this->anchoPagina - (2 * $this->margenX)) *  1) / 4 );
 		$this->anclaje_2 =  $this->margenX +  ((($this->anchoPagina - (2 * $this->margenX)) *  3) / 4 );
 		$this->empresa = $empresa;
-		$this->factura = $factura;
-		$this->listaServicios = $listaServicios;
-		
+		$this->factura = $factura;		
 	}
 	
 	function construyeFactura ()
@@ -335,13 +333,6 @@ class PDF extends TablaCompPDF
 	$factura->vehiculo = VehiculoLogic::retrieveVehiculo($factura->vehiculo);
 	$factura->cliente = ClienteLogic::retrieveCliente($factura->vehiculo->cliente);
 	
-	
-	
-	$listaMateriales = array(); 
-	MaterialLogic::listMateriales($listaMateriales);
-	
-	
-
 
 $empresa = new Empresa();
 $empresa->nombre = "Talleres Kulifer";
@@ -354,7 +345,7 @@ $empresa->nif = "99999999-Z";
 
 
 
-$pdf=new PDF($empresa, $factura, $listaMateriales);
+$pdf=new PDF($empresa, $factura);
 $pdf->generaFactura();
 
 

@@ -61,13 +61,14 @@
 	</tr>
 	<tr class="<?=$class?>" id="<?=$idInnerTable?>" style="display:none">
 		<td></td>
-		<td colspan="4"><fieldset>
-			<p><label class="leftlabel">Direcci&oacute;n:</label><label class="rightlabel"><?=$cliente->direccion?></label></p>
-			<p><label class="leftlabel">Nif/Cif:</label><label class="rightlabel"><?=$cliente->nif?></label></p>
-			<p><label class="leftlabel">Provincia:</label><label class="rightlabel"><?=$cliente->provincia?></label></p>
-			<p><label class="leftlabel">C&oacute;digo Postal:</label><label class="rightlabel"><?=$cliente->codpostal?></label></p>
-			<p><label class="leftlabel">Email: </label><label class="rightlabel"><?=$cliente->correoelectronico?></label></p>
-		</fieldset>
+		<td colspan="4">
+		    <table id="small">
+				<tr><th align="right">Direcci&oacute;n:</th><td align="left"><?=$cliente->direccion?></td></tr>
+				<tr><th align="right">Nif/Cif:</th><td align="left"><?=$cliente->nif?></td></tr>
+				<tr><th align="right">Provincia:</th><td align="left"><?=$cliente->provincia?></td></tr>
+				<tr><th align="right">C&oacute;digo Postal:</th><td align="left"><?=$cliente->codpostal?></td></tr>
+				<tr><th align="right">Email:</th><td align="left"><?=$cliente->correoelectronico?></td></tr>
+			</table>
 		</td>
 		
 		<td></td>
