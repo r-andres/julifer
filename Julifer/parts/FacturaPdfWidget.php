@@ -9,13 +9,13 @@ require_once("$ROOT/lib/common/TablaCompPDF.php");
 
 class PDF extends TablaCompPDF
 {
-
+	protected $altoPagina = 297;
 	protected $anchoPagina = 210;
 	protected $margenX  = 10;
 	protected $margenPie = 55;
 	protected $empresa, $factura;
 	protected $anclaje_1, $anclaje_2;
-	
+	protected $final = false;
 	protected $totalMateriales = 0;
 
 	
@@ -53,7 +53,8 @@ class PDF extends TablaCompPDF
 			$totalMecanica =  $this->factura->totalMecanica - (( $this->factura->totalMecanica * $this->factura->descuentoMecanica) / 100); 
 			$totalesMecanica["Total Chapa"] = number_format( $totalMecanica , 2);
 		}
-		$this->tablaFilasGrupo( "Chapa",  $this->factura-> mecanica, 
+		$er = $this->precalculaEspacioTabla ($this->factura-> mecanica, $totalesMecanica, 6);
+		$this->tablaFilasGrupo( "Chapa",  $this->factura-> mecanica , 
 								$totalesMecanica , 10, $this->GetY(), $ancho * 2 );
 		
 		$this->recalculadoMecanica	= $totalMecanica;					
@@ -68,14 +69,33 @@ class PDF extends TablaCompPDF
 			$totalesPintura["Total pintura"] = number_format( $totalPintura , 2);
 		}
 		$this->recalculadoPintura = $totalPintura;
+		$er = $this->precalculaEspacioTabla ($this->factura-> pintura, $totalesPintura, 6);
 		$this->tablaFilasGrupo( "Pintura",  $this->factura-> pintura, 
 								$totalesPintura , 10, $this->GetY(), $ancho * 2 );
 		
 			
-				
+		$this->final = true;		
 
 	}
 
+	
+	function  precalculaEspacioTabla ($texto, $array, $altura) {
+		$nFilasTeoricas = 2;  //
+		
+		$nFilasTeoricas += substr_count($texto, "\n") + 1;
+		
+		$nFilasTeoricas +=  count($array);
+		
+		$espacioRequerido =  $nFilasTeoricas * $altura;
+		
+		if ($this->GetY() + $espacioRequerido >=   ($this->altoPagina - ( $this->margenPie)) ) {
+			$this->AddPage();
+		}
+		
+		return $nFilasTeoricas;
+	}
+	
+	
 	
 	function totales ($x , $y, $ancho, $alto)
 	{
@@ -185,7 +205,12 @@ class PDF extends TablaCompPDF
 		}
 
 		
-		for ($i = count($datos) ; $i <= 10; $i++) {
+		if (count($datos) % 2 == 1) {
+			 $fila = array ();
+    		 array_push($datos, $fila);
+		}
+		
+		for ($i = count($datos) ; $i <= 6; $i++) {
     		 $fila = array ();
     		 array_push($datos, $fila);
 		}
@@ -246,6 +271,10 @@ class PDF extends TablaCompPDF
 		$separador = 3;
 		$xCondiciones = $this->margenX ;
 		
+		if (!$this->final) {
+			$anchoConforme = 57;
+			$anchoFirma = 57;
+		}
 		
 		$fichero = "lib/common/condiciones.txt";
 		$yCondiciones = $this ->  tablaDeFichero('CONDICIONES GENERALES DE REPARACIÓN', $fichero, $xCondiciones, $yPie, $anchoCondiciones);
@@ -256,8 +285,9 @@ class PDF extends TablaCompPDF
 		
 		$xTotales = $xFirma + $anchoFirma + $separador;
 		//$this->tablaVacia('TOTALES',  $xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
-		$this->totales($xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
-
+		if ($this->final) {
+			$this->totales($xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
+		} 
 		$textoPie = file("lib/common/pie.txt");
 		$pie = "";
 		foreach ($textoPie as $lineaPie) {
@@ -272,10 +302,13 @@ class PDF extends TablaCompPDF
 
 		$this->SetY($yCondiciones);
 		$this->SetFont('Arial','I',7);
+		$this->SetTextColor(127, 0, 0);
 		$this->Cell(0,7, utf8_decode($pie)  ,0,0,'C');
 		$this->Ln(4);
 		$this->Cell(0,7, utf8_decode($detallesEmpresa)  ,0,0,'C');
-
+		if ($this->PageNo() > 1  || ! $this->final ) {
+			$this->Cell(0,7, utf8_decode($this->PageNo() . " de {nb} ")  ,0,0,'C');
+		}
 	}
 
 
