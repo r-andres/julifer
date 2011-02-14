@@ -1,7 +1,8 @@
 <?php
 class Factura {
 	var $id, $fecha, $estado, $vehiculo, $servicios, $mecanica, $totalMecanica, $descuentoMecanica,  
-	  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado, $matricula;
+	  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado, $matricula, $tipo, $numero, $cuenta;
+	  
 	const TIPO_FACTURA = "FACTURA";
 	const TIPO_PRESUPUESTO = "PRESUPUESTO";
 	const ESTADO_PAGADO = "PAGADO";
@@ -28,6 +29,9 @@ class Factura {
 		
 		$this->pagado = $arr['pagado'] == ""?0:$arr['pagado'];
 		$this->franquicia = $arr['franquicia'] == ""?0:$arr['franquicia'];
+		
+		$this->numero = $arr['numero'];
+		$this->cuenta = $arr['cuenta'];
 		
 		$keys = array_keys($arr); 
 //		usort($keys, "Factura::cmp" );

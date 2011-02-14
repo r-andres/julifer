@@ -1,6 +1,6 @@
 <?php
-	//$SITE = "localhost"; 
-	$SITE = "webcindario"; 
+	$SITE = "localhost"; 
+	//$SITE = "webcindario"; 
     define('SITE', $SITE); 
 	
     if ($SITE == "localhost") {
