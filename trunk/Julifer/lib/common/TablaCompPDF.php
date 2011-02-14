@@ -67,13 +67,13 @@ class TablaCompPDF extends FPDF
 	}
 
 
-	function tablaEtiquetaDato ( $arrayDatos , $x , $y, $ancho, $alto = 0)
+	function tablaEtiquetaDato ( $arrayDatos , $x , $y, $ancho, $alto = 0, $alineado = 'L')
 	{
 		$this->SetY($y);
 		$longitudes = array ();
 		foreach ($arrayDatos as $etiqueta => $dato) {
 			$this->_lineaEtiquetaDato($x, $longitudes, $ancho, 
-						  $etiqueta,  $dato);	
+						  $etiqueta,  $dato, $alineado);	
 			
 		}
 		
@@ -90,20 +90,24 @@ class TablaCompPDF extends FPDF
 	}
 
 
-	function _lineaEtiquetaDato ($x, &$longitudes, $ancho,  $etiqueta, $dato) {
+	function _lineaEtiquetaDato ($x, &$longitudes, $ancho,  $etiqueta, $dato, $alineado) {
 		
 		$altura = 6; 
 		$interlineado = 5;
-		$margenIzquierdo = 30;
+		$anchoEtiqueta = 27;
+		$anchoDatos = $ancho - $anchoEtiqueta;
+		if ($alineado == 'R') {
+			$anchoDatos = 16;
+		}
 		
 		$this->SetX($x + 1);
 		$this->SetTextColor(0);
 		$this->SetFont('Arial','B',8);
-		$this->Cell($margenIzquierdo, $altura, utf8_decode($etiqueta),0,0,'L');
+		$this->Cell($anchoEtiqueta, $altura, utf8_decode($etiqueta),0,0,'R');
 		$this->SetTextColor(127, 127, 127);
 		$this->SetFont('Arial','',8);
-		$this->Cell($ancho - $margenIzquierdo , $altura , utf8_decode($dato) , 0);
-		array_push($longitudes, ($this->_dameAncho($dato) + $margenIzquierdo));
+		$this->Cell( $anchoDatos, $altura , utf8_decode($dato) , 0, 0, $alineado);
+		array_push($longitudes, ($this->_dameAncho($dato) + $anchoEtiqueta));
 		$this->Ln($interlineado);
 		
 	}
@@ -248,7 +252,7 @@ class TablaCompPDF extends FPDF
 
 
         function  tablaVacia ($titulo, $x , $y, $ancho, $altura )
-	{
+	   {
 		
 
 		$this->SetFont('Arial','B', 4);
@@ -257,6 +261,24 @@ class TablaCompPDF extends FPDF
 		$this->Cell ($ancho , 4 , utf8_decode($titulo));
 		$this->Ln(4);
 
+		$alturaRect = $altura;
+		$anchoRect = $ancho + 1;
+		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 );
+		return $this->GetY();
+        }
+        
+       function  tablaSimple ($titulo, $texto,  $x , $y, $ancho, $altura )
+	   {
+		
+
+		$this->SetFont('Arial','B', 4);
+		$this->SetY($y);
+		$this->SetX($x + 1);	
+		$this->Cell ($ancho , 4 , utf8_decode($titulo));
+		$this->Ln(4);
+		$this->SetFont('Arial','B', 10);
+		$this->SetX($x + 1);	
+		$this->Cell ($ancho , 4 , utf8_decode($texto), 0, 0, 'C');
 		$alturaRect = $altura;
 		$anchoRect = $ancho + 1;
 		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 );
