@@ -135,24 +135,33 @@ class PDF extends TablaCompPDF
 		
 		$datos['TOTAL FACTURA']	= number_format($totalFactura , 2);
 		
+		$alineado = 'R';
 		
-		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho , $alto);
+		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho , $alto, $alineado);
 	}
 
 
 
 	function detalleFactura ($x, $y, $ancho) {
 		
+		$etiquetaNumero = 'Num. Factura';
+		
+		if ($this->esPresupuesto() ) {
+			$etiquetaNumero = 'Num. Presupuesto';
+		}
+		
+		
 		$datos = array ( array ( 'CIF/NIF' => $this->factura->cliente-> nif ,
-				      'fecha' => $this->factura->fecha ,
+				      'Fecha' => $this->factura->fecha ,
+					  $etiquetaNumero	=> $this->factura->id
 				      ),
-				     array ( 'marca' => $this->factura->vehiculo->marca ,
-				      'modelo' => $this->factura->vehiculo->modelo ,
-				      'matricula' => $this->factura->vehiculo->matricula
+				     array ( 'Marca' => $this->factura->vehiculo->marca ,
+				      'Modelo' => $this->factura->vehiculo->modelo ,
+				      'Matrícula' => $this->factura->vehiculo->matricula
 				     ),
 				     array ( 'kms' => $this->factura->vehiculo->km ,
-				      'color' => $this->factura->vehiculo->color ,
-				      'num bastidor' => $this->factura->vehiculo->numerobastidor 
+				      'Color' => $this->factura->vehiculo->color ,
+				      'Num. bastidor' => $this->factura->vehiculo->numerobastidor 
 				     ));
 		
 		return $this->tablaGruposEtiquetaDato($datos, $x, $y, $ancho);
@@ -270,22 +279,39 @@ class PDF extends TablaCompPDF
 		$anchoTotales = 45;
 		$separador = 3;
 		$xCondiciones = $this->margenX ;
+
+		$altoDomiciliacion = 10 ;
+		$anchoDomiciliacion = $anchoFirma + $separador + $anchoConforme;
 		
 		if (!$this->final) {
 			$anchoConforme = 57;
 			$anchoFirma = 57;
 		}
 		
+		
+		
 		$fichero = "lib/common/condiciones.txt";
 		$yCondiciones = $this ->  tablaDeFichero('CONDICIONES GENERALES DE REPARACIÓN', $fichero, $xCondiciones, $yPie, $anchoCondiciones);
 		$xConforme = $xCondiciones + $anchoCondiciones + $separador;
-		$this->tablaVacia('Conforme: EL CLIENTE', $xConforme  , $yPie, $anchoConforme, $yCondiciones - $yPie);
+		$altoMovil = $yCondiciones - $yPie;
+		
+		if ($this->final && $this->factura->cuenta != '') {
+			$altoMovil = $altoMovil - $altoDomiciliacion - 2;
+			$yDomiciliacion = $yPie + $altoMovil + 2;
+		}
+		$this->tablaVacia('Conforme: EL CLIENTE', $xConforme  , $yPie, $anchoConforme, $altoMovil);
 		$xFirma = $xConforme + $anchoConforme + $separador;
-		$this->tablaVacia('Firma y Sello de la empresa',  $xFirma, $yPie, $anchoFirma, $yCondiciones - $yPie);
+		$this->tablaVacia('Firma y Sello de la empresa',  $xFirma, $yPie, $anchoFirma, $altoMovil);
 		
 		$xTotales = $xFirma + $anchoFirma + $separador;
 		//$this->tablaVacia('TOTALES',  $xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
 		if ($this->final) {
+			if ($this->factura->cuenta != '') {
+			$this->tablaSimple('Domiciliación bancaria',
+							 	$this->factura->cuenta,	 
+								$xConforme  , $yDomiciliacion, 
+								$anchoDomiciliacion, $altoDomiciliacion);
+			}
 			$this->totales($xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
 		} 
 		$textoPie = file("lib/common/pie.txt");
@@ -318,6 +344,7 @@ class PDF extends TablaCompPDF
 
 		$this->AliasNbPages();
 		$this->AddPage();
+		$this->marcaAgua();
 		$this->construyeFactura();
 		$this->Output();
 	}
@@ -335,27 +362,62 @@ class PDF extends TablaCompPDF
 	}
 
 	
-	function gira ($angle,$x=-1,$y=-1) {
+	function marcaAgua () {
+		if ($this->esPresupuesto()) {
+			$this->watermark("PRESUPUESTO");
+		}
+    }
 
+    function watermark ($texto) {
+    	$this->SetFont('Arial','B',70);
+		$this->SetTextColor(255,192,203);
+		$this->RotatedText(35,190,$texto,45);
+		$this->SetTextColor(0,0,0);
+    }
+    
+    function esPresupuesto () {
+    	return strcmp($this->factura->tipo, Factura::TIPO_PRESUPUESTO) == 0;
+    }
+    
+    function RotatedText($x, $y, $txt, $angle)
+    {
+         //Text rotated around its origin
+         $this->Rotate($angle,$x,$y);
+         $this->Text($x,$y,$txt);
+         $this->Rotate(0);
+    }
+
+    var $angle=0;
+   
+    function Rotate($angle,$x=-1,$y=-1)
+    {
         if($x==-1)
-            $x=$this->x;
+        $x=$this->x;
         if($y==-1)
-            $y=$this->y;
+        $y=$this->y;
         if($this->angle!=0)
-            $this->_out('Q');
+        $this->_out('Q');
         $this->angle=$angle;
         if($angle!=0)
-
         {
-            $angle*=M_PI/180;
-            $c=cos($angle);
-            $s=sin($angle);
-            $cx=$x*$this->k;
-            $cy=($this->h-$y)*$this->k;
-            
-            $this->_out(sprintf('q %.5f %.5f %.5f %.5f %.2f %.2f cm 1 0 0 1 %.2f %.2f cm',$c,$s,-$s,$c,$cx,$cy,-$cx,-$cy));
+        $angle*=M_PI/180;
+        $c=cos($angle);
+        $s=sin($angle);
+        $cx=$x*$this->k;
+        $cy=($this->h-$y)*$this->k;
+        $this->_out(sprintf('q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm',$c,$s,-$s,$c,$cx,$cy,-$cx,-$cy));
         }
-    } 
+    }
+   
+    function _endpage()
+    {
+        if($this->angle!=0)
+        {
+        $this->angle=0;
+        $this->_out('Q');
+        }
+        parent::_endpage();
+    }
 }
 
 
