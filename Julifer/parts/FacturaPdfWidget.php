@@ -153,7 +153,7 @@ class PDF extends TablaCompPDF
 		
 		$datos = array ( array ( 'CIF/NIF' => $this->factura->cliente-> nif ,
 				      'Fecha' => $this->factura->fecha ,
-					  $etiquetaNumero	=> $this->factura->id
+					  $etiquetaNumero	=> $this->factura->numero
 				      ),
 				     array ( 'Marca' => $this->factura->vehiculo->marca ,
 				      'Modelo' => $this->factura->vehiculo->modelo ,
