@@ -48,6 +48,7 @@ CREATE TABLE `facturas` (
   `id` int(11) NOT NULL auto_increment,
   `fecha` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `tipo` text,
+  `numero` int(11) NOT NULL,
   `idvehiculo` text,
   `mecanica` text,
   `totalmecanica` double default 0,
@@ -57,6 +58,7 @@ CREATE TABLE `facturas` (
   `descuentopintura` double default 0,
   `pagado` double default 0,
   `franquicia` double default 0,
+  `cuenta` text,
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 

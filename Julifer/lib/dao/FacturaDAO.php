@@ -75,7 +75,9 @@ class FacturaDAO  {
 	 $vo->descuentoPintura = $result['descuentopintura'];
 	 $vo->franquicia = $result['franquicia'];
 	 $vo->pagado = $result['pagado'];
-	   
+	 $vo->numero = $result['numero'];
+	 $vo->cuenta = $result['cuenta'];
+	    
 	 $list =  array () ;
 	 $query2 = "SELECT * FROM  materialFacturados WHERE idfactura = $vo->id ";
 	 $result2 = mysql_query($query2, $this->conn) or db__showError();
@@ -112,6 +114,7 @@ class FacturaDAO  {
 		#execute update statement here
 		$query = "UPDATE $this->TABLE_NAME SET tipo = '$vo->tipo' ,fecha = '$vo->fecha' , idvehiculo = '$vo->vehiculo',   ".
    			 " franquicia = '$vo->franquicia' , pagado = '$vo->pagado',  " .
+		     " numero = '$vo->numero' , cuenta = '$vo->cuenta',  " .
    			 " mecanica = '$vo->mecanica', totalmecanica = '$vo->totalMecanica', descuentomecanica = '$vo->descuentoMecanica', ".
    			 " pintura= '$vo->pintura', totalpintura= '$vo->totalPintura', descuentopintura= '$vo->descuentoPintura' WHERE id = '$vo->id' ";
 		$result = mysql_query($query, $this->conn) or db__showErrorCause($query);
@@ -120,11 +123,11 @@ class FacturaDAO  {
 
 	function insert(&$vo) {
 		$query = "INSERT INTO $this->TABLE_NAME (tipo, fecha, idvehiculo , " .
-   											" franquicia, pagado, " .
+   											" franquicia, pagado, numero, cuenta, " .
    											" mecanica, totalmecanica, descuentomecanica," .
    											" pintura, totalpintura, descuentopintura) " .
    			 "VALUES ( '$vo->tipo' , '$vo->fecha' , '$vo->vehiculo' , " . 
-   					 " '$vo->franquicia', '$vo->pagado',  " .
+   					 " '$vo->franquicia', '$vo->pagado', '$vo->numero', '$vo->cuenta', " .
    			     	 " '$vo->mecanica' , '$vo->totalMecanica', '$vo->descuentoMecanica' , " . 
    			     	 " '$vo->pintura' , '$vo->totalPintura', '$vo->descuentoPintura') ";
 		$result = mysql_query($query, $this->conn) or db__showErrorCause($query);
