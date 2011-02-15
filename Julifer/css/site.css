@@ -187,7 +187,7 @@ legend span {
 
 input {
 	padding: 0.15em;
-	width: 25em;
+	width: 35em;
 	border: 1px solid #ddd;
 	background: #fafafa;
 	margin-left: 0;
@@ -200,8 +200,8 @@ input {
 
 textarea{
 	padding: 0.15em;
-	width: 25em;
-	height: 5em;
+	width: 35em;
+	height: 15em;
 	border: 1px solid #ddd;
 	background: #fafafa;
 	margin-left: 0;
