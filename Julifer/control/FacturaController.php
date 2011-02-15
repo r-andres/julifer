@@ -6,6 +6,9 @@ class FacturaController {
 	var $errs;
 	var $factura;
 	var $message;
+	var $idfactura;
+	var $idpresupuesto;
+	var $printfactura;
 
 	function FacturaController() {
 		$action = $_GET['cmd'];
@@ -13,7 +16,8 @@ class FacturaController {
 		$this->errs = array();
 		$updateList = true;
 		$this->message = '';
-
+		$this->printfactura = false;
+		
 		if ($action == 'delete') {
 			// Checking the bill exists
 			$this->factura = FacturaLogic::retrieveFactura($_GET['id']);
@@ -23,22 +27,35 @@ class FacturaController {
 				$factura = new  Factura();
 				$factura->id =  $_GET['id'];
 				FacturaLogic::deleteFactura($factura);
-				$this->message = "La factura número ".$factura->id." ha sido dado borrada.";
+				$this->message = "La factura/presupuesto ha sido eliminada/o.";
 			}
 		} else if ($action == 'edit') {
 			$this->factura = FacturaLogic::retrieveFactura($_GET['id']);
+			
+			// Numero for presupuesto/factura
+			if ($this->factura->tipo == 'FACTURA'){
+				$this->idfactura =$this->factura->numero;
+				$this->idpresupuesto = FacturaLogic::getNextPresupuestoId();
+			} else {
+				$this->idfactura = FacturaLogic::getNextFacturaId();
+				$this->idpresupuesto = $this->factura->numero;
+			}
+			
 			$updateList = false;
 		}  else if ($action == 'save') {
 			$factura = new Factura();
 			$factura->dump($_POST);
-			FacturaLogic::saveFactura($factura);
+			$newfactura = ($factura->id == 0);
 			
-			if ($factura->id == 0){
-				$this->message = "La factura ha sido realizada correctamente";
+			// Checking unicity of tupla tipo-numero
+			if (!FacturaLogic::checkUnicityFacturaWealth($factura)) {
+				array_push($this->errs, "Lo sentimos, pero ya existe una factura/presupuesto con ese numero");
 			} else {
-				$this->message = "La factura ha sido modificada correctamente";
+				FacturaLogic::saveFactura($factura);
+				$this->message = "La factura ha sido ".($newfactura?"realizada":"modificada"). " correctamente";
+				$this->printfactura = true;
+				$this->factura = $factura;
 			}
-			$this->factura = $factura;
 		} else if ($action == 'search') {
 			// Searching by client parameters
 			$cliente = new Cliente();
@@ -53,17 +70,23 @@ class FacturaController {
 			$factura->searchDump($_POST);
 			
 			FacturaLogic::searchFacturas($this->list, $factura, $vehiculo, $cliente);
+			
+			// Postfiltering by state
+			$this->list = FacturaLogic::filterFacturasByState($this->list, $_POST['estado']);
+			
 			$updateList = false;
 		} else if ($action == 'new') {
 			$this->factura = new Factura();
 			$this->factura->id = 0;
+			$this->idfactura = FacturaLogic::getNextFacturaId();
+			$this->idpresupuesto = FacturaLogic::getNextPresupuestoId();
+			$this->factura->numero = $this->idfactura;
 			$updateList = false;
 		}
 
 		if ($updateList) {
 			FacturaLogic::listFacturas($this->list);
 		}
-			
 	}
 }
 ?>

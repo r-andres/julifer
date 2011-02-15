@@ -3,12 +3,28 @@
 class FormHelper { 
 
 	
-	
-	function formSelectDOM  ( $label, $name, $listElements, $selectedId ) {
+	/**
+	 * Creates a combo with a list of elements.
+	 * 
+	 * @param $label
+	 * @param $name
+	 * @param $listElements
+	 * @param $selectedId
+	 */
+	function formSelectDOM  ( $label, $name, $listElements, $selectedId, $onChange ) {
 	?>	
 	<p><label for="<?=$name?>"><?=$label?></label>
-	<select name="<?=$name?>" id="<?=$name?>"> 
+	<?php
+	   if (empty($onChange)){
+	   	?>
+	   	<select name="<?=$name?>" id="<?=$name?>"> 
+	   	<?php
+	   } else {
+	?>	
+	    <select name="<?=$name?>" id="<?=$name?>" onchange='javascript:<?=$onChange?>;'> 
+	
 	<?php 
+	} 
 		foreach ($listElements as $element) {
 			$selected = '';
 			if ($element == $selectedId ) {

@@ -27,6 +27,22 @@ class FacturaDAO  {
 
 	}
 
+	/**
+	 * Checks the maximun id for facturas/presupuesto.
+	 */
+	function getNextId($tipo) {
+		$query = "select max(numero) as numero from facturas where tipo='$tipo'";
+		$result = mysql_query($query,$this->conn) or db__showError();
+
+		$auxNumber = 0;
+		if ($myrow = mysql_fetch_array($result)) {
+			$auxNumber = $myrow['numero'];
+		}
+		mysql_free_result($result);
+		
+		return $auxNumber + 1;
+	}
+	
 	function delete(&$vo) {
 
 		$query = "DELETE FROM  $this->TABLE_NAME WHERE $this->TABLE_NAME.id = $vo->id ";
@@ -35,8 +51,8 @@ class FacturaDAO  {
 
 	function filteredList ($filter, $orderby) {
 		$list =  array () ;
-	    $query = "SELECT facturas.*, DATE_FORMAT(facturas.fecha,  '%d-%m-%Y') as cfecha FROM  $this->TABLE_NAME";
-	    if($filter != "")
+		$query = "SELECT facturas.*, DATE_FORMAT(facturas.fecha,  '%d-%m-%Y') as cfecha FROM  $this->TABLE_NAME";
+		if($filter != "")
 		{
 			$query .= " WHERE $filter ";
 		}
@@ -44,6 +60,7 @@ class FacturaDAO  {
 		{
 			$query .= " ORDER BY  $orderby ";
 		}
+		
 		$result = mysql_query($query,$this->conn) or db__showError();
 
 		if ($myrow = mysql_fetch_array($result)) {
@@ -77,7 +94,8 @@ class FacturaDAO  {
 	 $vo->pagado = $result['pagado'];
 	 $vo->numero = $result['numero'];
 	 $vo->cuenta = $result['cuenta'];
-	    
+	 $vo->splitCuenta();
+	  
 	 $list =  array () ;
 	 $query2 = "SELECT * FROM  materialFacturados WHERE idfactura = $vo->id ";
 	 $result2 = mysql_query($query2, $this->conn) or db__showError();
@@ -95,19 +113,19 @@ class FacturaDAO  {
 	 }
 	 mysql_free_result($result2);
 	 $vo->servicios = $list;
-	 
+
 	 // Matricula
 	 if (!empty($vo->vehiculo)){
 		 $query3 = "SELECT matricula FROM  vehiculos WHERE id =$vo->vehiculo ";
-		 
+		 	
 		 $result3 = mysql_query($query3, $this->conn) or db__showError();
 		 if ($myrow3 = mysql_fetch_array($result3)) {
 		 	do {
 		 		$vo->matricula = $myrow3['matricula'];
 		 	} while ($myrow3 = mysql_fetch_array($result3));
 		 }
-		 mysql_free_result($result3);	
-	 } 
+		 mysql_free_result($result3);
+	 }
 	}
 
 	function update(&$vo) {
@@ -182,6 +200,7 @@ class FacturaDAO  {
 			if (!empty($where)) {
 				$where .= " and ";
 			}
+				
 			$where .= "$vo_prefix.$key like '%$value%'";
 		}
 
@@ -229,7 +248,7 @@ class FacturaDAO  {
 			} while ($myrow = mysql_fetch_array($result));
 		}
 		mysql_free_result($result);
-		
+
 		return $list;
 	}
 }

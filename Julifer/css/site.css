@@ -70,7 +70,7 @@ p {
 	text-align: left;
 	border: 1px solid #5F5F5F;
 }
-
+	
 #pageHeader {
 	padding: 5px 0 0 15px;
 }
@@ -187,7 +187,7 @@ legend span {
 
 input {
 	padding: 0.15em;
-	width: 15em;
+	width: 25em;
 	border: 1px solid #ddd;
 	background: #fafafa;
 	margin-left: 0;
@@ -198,6 +198,20 @@ input {
 	font: bold 0.95em arial, sans-serif;
 }
 
+textarea{
+	padding: 0.15em;
+	width: 25em;
+	height: 5em;
+	border: 1px solid #ddd;
+	background: #fafafa;
+	margin-left: 0;
+	margin-right: 0.5em;
+	font: bold 0.95em arial, sans-serif;
+	-moz-border-radius: 0.4em;
+	-khtml-border-radius: 0.4em;
+	font: bold 0.95em arial, sans-serif;
+}
+	
 input:hover,input:focus {
 	border-color: #c5c5c5;
 	background: #f6f6f6;
