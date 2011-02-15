@@ -114,7 +114,7 @@ class TablaCompPDF extends FPDF
 
 	
 	
-	function tablaFilas ( $arrayDatos , $arrayCabeceras , $totalTitulo, $total, $x , $y)
+	function tablaFilas ( $arrayDatos , $arrayCabeceras , $totalTitulo, $total, $muestraTotal, $x , $y)
 	{
 		$this->SetY($y);
 	
@@ -132,14 +132,18 @@ class TablaCompPDF extends FPDF
 		$anchoRect = array_sum($arrayCabeceras) ;
 		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 , '' , '124');
 		
+		if ($muestraTotal) {
+			$this->SetX($x);
+			$this->SetTextColor(0, 0, 0);
+			$this->SetFont('Arial','B', 8);
+			$this->Cell ($anchoRect - 30 , $altura , utf8_decode($totalTitulo), 0 , 0 , 'R');
+			$this->SetFont('Arial','', 8);
+			$this->Cell (30 , $altura , utf8_decode($total), 'LRTB' , 0 , 'R');
+			$this->ln($altura);
+		} else {
+			$this->AddPage();
+		}
 		
-		$this->SetX($x);
-		$this->SetTextColor(0, 0, 0);
-		$this->SetFont('Arial','B', 8);
-		$this->Cell ($anchoRect - 30 , $altura , utf8_decode($totalTitulo), 0 , 0 , 'R');
-		$this->SetFont('Arial','', 8);
-		$this->Cell (30 , $altura , utf8_decode($total), 'LRTB' , 0 , 'R');
-		$this->ln($altura);
 		
 		return $this->GetY();
 	}
