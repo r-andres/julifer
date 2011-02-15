@@ -15,9 +15,7 @@
 
 ?>
 <script type='text/javascript'>
-function updateNumero(value){
-	alert ("presupuesto " + "<?=$controller->idpresupuesto?>");
-	
+function updateNumero(value){	
 	var item = document.getElementById("numero"); 
 	if (value == "<?=Factura::TIPO_FACTURA?>"){
 		item.value = "<?=$controller->idfactura?>";
