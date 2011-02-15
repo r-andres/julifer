@@ -20,8 +20,7 @@
 	}
 ?>
 <script type="text/javascript">
-if ("<?=$controller->printfactura?>" &&
-    confirm("Por favor, confirme si desea imprimir la factura.")) {
+if ("<?=$controller->printfactura?>") {
 	downloadAction('FacturaPdf','edit','<?=$controller->factura->id?>');
 }
 
