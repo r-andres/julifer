@@ -131,7 +131,8 @@ Servicio.prototype = {
     	var cantidadField = document.createElement('input');
     	cantidadField.name= "cantidad_" + index;
     	cantidadField.style.width="30px";
-    	 
+    	cantidadField.onchange = calculaFactura;
+    	
     	var servicioField = document.createElement('input');
     	servicioField.name= "material_" + index;
     	servicioField.style.width="180px";
@@ -139,11 +140,11 @@ Servicio.prototype = {
     	var precioField = document.createElement('input');
     	precioField.name= "precio_" + index;
     	precioField.style.width="40px";
-    	
+    	precioField.onchange = calculaFactura;
     	var descuentoField = document.createElement('input');
     	descuentoField.name= "descuento_" + index;
     	descuentoField.style.width="30px";
-    	
+    	descuentoField.onchange = calculaFactura;
     	var deleteButton = document.createElement('div');
     	deleteButton.innerHTML = "<img src='images/delete.png' title='Borrar material'>";
     	deleteButton.addEventListener('click', this.cmdDelete  , false); 

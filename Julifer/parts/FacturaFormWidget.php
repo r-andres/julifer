@@ -84,14 +84,8 @@
 
 
 <script type="text/javascript">
-var rl = new RecordList(document.getElementById('divMateriales'));
-<?php
-if ($factura->servicios != '') {
-		foreach ($factura->servicios as $servFac) {
-			echo ("rl.addServicio($servFac->cantidad, '$servFac->material', $servFac->precio, $servFac->descuento);\n");
-		}
-}
-?>
+
+
 
 function calculaFactura () {
 	porcentajeIva = 18;
@@ -144,20 +138,24 @@ function calculaFactura () {
 	
 }
 
+var rl = new RecordList(document.getElementById('divMateriales'), calculaFactura);
+<?php
+if ($factura->servicios != '') {
+		foreach ($factura->servicios as $servFac) {
+			echo ("rl.addServicio($servFac->cantidad, '$servFac->material', $servFac->precio, $servFac->descuento);\n");
+		}
+}
+?>
+
+
+
 function formateaNumero (original) {
 	var numero = Number(original);
 	var result = numero.toFixed(2);
 	return result;
 }
 
-$('input[name="totalPintura"]').change(calculaFactura);
-$('input[name="totalMecanica"]').change(calculaFactura);
-$('input[name="descuentoPintura"]').change(calculaFactura);
-$('input[name="descuentoMecanica"]').change(calculaFactura);
-$('input[name^=cantidad]').change(calculaFactura);
-$('input[name^=descuento]').change(calculaFactura);
-$('input[name^=precio]').change(calculaFactura);
-$('input[name^=franquicia]').change(calculaFactura);
+$('.factura').change(calculaFactura);
 calculaFactura ();
 </script>
 <?php
