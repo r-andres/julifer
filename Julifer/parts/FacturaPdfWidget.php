@@ -80,9 +80,15 @@ class PDF extends TablaCompPDF
 
 	
 	function  precalculaEspacioTabla ($texto, $array, $altura) {
-		$nFilasTeoricas = 2;  //
+		$nFilasTeoricas = 3;  //
+		$MAX_CARACTERES_LINEA = 114;
 		
-		$nFilasTeoricas += substr_count($texto, "\n") + 1;
+		$lineas = explode("\n", $texto);
+		
+		foreach ($lineas as $linea ) {
+			$numfilas = ceil(strlen($linea) / $MAX_CARACTERES_LINEA);
+			$nFilasTeoricas += $numfilas;
+		}
 		
 		$nFilasTeoricas +=  count($array);
 		
@@ -195,6 +201,10 @@ class PDF extends TablaCompPDF
 		
 		$subtotal = 0;
 		$datos = array();
+		$maxFilasPorPagina = 24;
+		$contador = 0;
+		$contadorTotal = 0;
+		$totalDatos = count ($data);
 		foreach($data as $row)
 		{
 			$fila = array ();
@@ -211,20 +221,45 @@ class PDF extends TablaCompPDF
 			$fila[utf8_decode('Precio')] = number_format($precio, 2);
 			$this->totalMateriales += $precio;
 			array_push($datos, $fila);
+			$contador += 1;
+			
+			if ($contador == $maxFilasPorPagina ) {
+				$muestraTotal = false;
+				$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $ancho);
+				$y = $this->finCabecera;
+				$datos = array();
+				$contador = 0;
+				$maxFilasPorPagina = 32;
+			}
+			
 		}
 
-		
-		if (count($datos) % 2 == 1) {
-			 $fila = array ();
-    		 array_push($datos, $fila);
+		if ($contador != 0 ) {
+			$muestraTotal = true;
+			
+			if ($contador % 2 == 1) {
+				 $fila = array ();
+	    		 array_push($datos, $fila);
+			}
+			
+			for ($i = count($datos) ; $i <= 6; $i++) {
+	    		 $fila = array ();
+	    		 array_push($datos, $fila);
+			}
+			
+			$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $ancho);
 		}
 		
-		for ($i = count($datos) ; $i <= 6; $i++) {
-    		 $fila = array ();
-    		 array_push($datos, $fila);
-		}
 		
-		return $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2) , $x, $y, $ancho);
+		
+		
+		
+		
+		
+		
+			
+		
+		return $yFinal; 
 	}
 	
 	
@@ -262,6 +297,8 @@ class PDF extends TablaCompPDF
 		$this->SetX($xLineaLogo);
 		$this->Cell($maxLongitudes, $tamannoFuente, utf8_decode($lineaLogo2),0,0,'C');
 		$this->Ln(10);	
+		
+		$this->finCabecera = $this->GetY();
 		
         }
 
