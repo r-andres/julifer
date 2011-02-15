@@ -33,10 +33,11 @@ if ("<?=$controller->printfactura?>") {
 <thead>
 <tr>
     <th>&nbsp;</th>
+    <th>Tipo</th>
+	<th>N&uacute;mero</th>
 	<th>Fecha</th>
 	<th>Matr&iacute;cula</th>
 	<th>Veh&iacute;culo</th>
-	<th>Tipo</th>
 	<th>Importe</th>
 	<th>Pagado</th>
 	<th>Estado</th>
@@ -69,6 +70,8 @@ if ("<?=$controller->printfactura?>") {
 		<tr class="<?=$class?>">
 		   <td><a href="javascript:doAction('FacturaForm','edit','<?=$factura->id?>')">
 		       <img src="images/edit.png" border="0" title="Modificar Factura" /></a></td>
+		   <td><?=$tipo_ab?></td>
+		   <td><?=$factura->numero?></td>
 		   <td><?=$factura->fecha?></td>
 		   <td><?=$factura->matricula?></td>
 		   <td>
@@ -78,8 +81,6 @@ if ("<?=$controller->printfactura?>") {
 			</div>
 			<input type="hidden" id="vehiculo_<?=$counter?>" value="<?=$factura->vehiculo?>"/>
            </td>
-
-		<td><?=$tipo_ab?></td>
 		<td nowrap="yes"><?=FormHelper::euroFormat($factura->total())?></td>
 		<td nowrap="yes"><?=$pagado?></td>
 		<td><?=$estado?></td>
