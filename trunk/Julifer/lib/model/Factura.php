@@ -1,7 +1,8 @@
 <?php
 class Factura {
 	var $id, $fecha, $estado, $vehiculo, $servicios, $mecanica, $totalMecanica, $descuentoMecanica,  
-	  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado, $matricula, $tipo, $numero, $cuenta;
+	  $pintura, $totalPintura, $descuentoPintura, $franquicia, $pagado, $matricula, $tipo, $numero, 
+	  $cuentae, $cuentao, $cuentadc, $cuentan, $cuenta;
 	  
 	const TIPO_FACTURA = "FACTURA";
 	const TIPO_PRESUPUESTO = "PRESUPUESTO";
@@ -30,8 +31,10 @@ class Factura {
 		$this->pagado = $arr['pagado'] == ""?0:$arr['pagado'];
 		$this->franquicia = $arr['franquicia'] == ""?0:$arr['franquicia'];
 		
-		$this->numero = $arr['numero'];
-		$this->cuenta = $arr['cuenta'];
+		$this->numero =  $arr['numero'] == ""?0:$arr['numero'];
+		if (!empty($arr['cuentae']) && !empty($arr['cuentao']) && !empty($arr['cuentadc']) && !empty($arr['cuentan'])){
+			$this->cuenta = $arr['cuentae']." ".$arr['cuentao']." ".$arr['cuentadc']." ".$arr['cuentan'];
+		}
 		
 		$keys = array_keys($arr); 
 //		usort($keys, "Factura::cmp" );
@@ -66,6 +69,7 @@ class Factura {
 		$this->tipo = $arr['tipo'];
 		$this->pagado = $arr['pagado'] == ""?0:$arr['pagado'];
 		$this->franquicia = $arr['franquicia'] == ""?0:$arr['franquicia'];
+		$this->numero = $arr['numero'];
 	}
 	
 	function cmp ($a, $b) {
@@ -123,6 +127,21 @@ class Factura {
 		
 	}
 	
+	/**
+	 * Splits cuenta in their components.
+	 * 
+	 */
+	function splitCuenta() {
+		if (empty($this->cuenta)) {
+			return;
+		}
+		
+		$comp = explode(" ", $this->cuenta);
+		$this->cuentae = $comp[0];
+		$this->cuentao = $comp[1];
+		$this->cuentadc = $comp[2];
+		$this->cuentan = $comp[3];
+	}
 	
 	function total() {
 		$total = 0; 		

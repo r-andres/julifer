@@ -9,7 +9,15 @@
 <form id="myForm">
 <fieldset>
 <legend>Buscar Facturas:</legend>
-<?=FormHelper::formSelectDOM("tipo","tipo", $listaEstados , $factura->tipo )?> 
+<?=FormHelper::formSelectDOM("tipo","tipo", $listaEstados , $factura->tipo, null )?> 
+<p><label for="numero">N&uacute;mero</label> <input type="text" name="numero" value="<?=$vehiculo->numero?>" /></p>
+<p><label for="estado">Estado</label>
+  <select name="estado">
+    <option>Cualquiera</option>
+    <option>Pendiente</option>
+    <option>Pagado</option>
+  </select>
+</p>
 <p><label for="fecha">Fecha (dd-mm-yyyy)</label> <input type="text" name="fecha" value="<?=$factura->fecha?>" /></p>
 
 <p style="height:12px;"></p>

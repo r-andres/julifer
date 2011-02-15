@@ -14,6 +14,17 @@
 	$listaEstados = array ( Factura::TIPO_FACTURA, Factura::TIPO_PRESUPUESTO);
 
 ?>
+<script type='text/javascript'>
+function updateNumero(value){
+	var item = document.getElementById("numero"); 
+	if (value == "<?=Factura::TIPO_FACTURA?>"){
+		item.value = "<?=$controller->idfactura?>";
+	} else {
+		item.value = "<?=$controller->idpresupuesto?>";
+	}
+}
+</script> 
+
 <script type="text/javascript" src="js/forms/factura.js"></script>
 
 <div id="formDiv">
@@ -24,10 +35,15 @@
  <span></span><br clear="all"/>
 </div>
 
-<?=FormHelper::formSelectDOM("Tipo","tipo", $listaEstados , $factura->tipo )?> 
+<div id="formContent" style="width:80%; float:left;">
+<?=FormHelper::formSelectDOM("Tipo","tipo", $listaEstados , $factura->tipo , 'updateNumero(this.value)')?> 
 <p>
   <label for="pagado">Pagado</label>
-  <input class="factura" type="text" name="pagado" value="<?=$factura->pagado?>" />
+  <input type="text" name="pagado" value="<?=$factura->pagado?>" />
+</p>
+<p>
+   <label for="numero">N&uacute;mero</label>
+   <input type="text" name="numero" value="<?=$factura->numero?>" class="required" />
 </p>
 <p>
   <label for="fecha">Fecha (dd-mm-yyyy)</label> 
@@ -41,19 +57,19 @@
 </p>
 <p>
   <label for="franquicia">Franquicia</label> 
-  <input class="factura" type="text" name="franquicia" value="<?=$factura->franquicia?>" />
+  <input type="text" name="franquicia" value="<?=$factura->franquicia?>" />
 </p>
 <p>
   <label for="mecanica">Chapa</label> 
-  <textarea  name="mecanica"><?=$factura->mecanica?>
+  <textarea  name="mecanica"><?=$factura->mecanica?> 
 </textarea></p>
 <p>
   <label for="totalMecanica">Total Chapa</label> 
-  <input class="factura" type="text" name="totalMecanica" value="<?=$factura->totalMecanica?>" class="required" />
+  <input type="text" name="totalMecanica" value="<?=$factura->totalMecanica?>" class="required" />
 </p>
 <p>
   <label for="descuentoMecanica">Descuento chapa (%)</label> 
-  <input class="factura" type="text" name="descuentoMecanica" value="<?=$factura->descuentoMecanica?>" />
+  <input type="text" name="descuentoMecanica" value="<?=$factura->descuentoMecanica?>" />
 </p>
 <p>
   <label for="pintura">Pintura</label> 
@@ -61,11 +77,19 @@
 </p>
 <p>
   <label for="totalPintura">Total Pintura</label> 
-  <input class="factura" type="text" name="totalPintura" value="<?=$factura->totalPintura?>"  class="required" />
+  <input type="text" name="totalPintura" value="<?=$factura->totalPintura?>"  class="required" />
 </p>
 <p>
   <label for="descuentoPintura">Descuento Pintura (%)</label> 
   <input class="factura" type="text" name="descuentoPintura" value="<?=$factura->descuentoPintura?>" />
+</p>
+
+<p>
+  <label for="cuenta">N&uacute;mero de cuenta</label> 
+  <input type="text" name="cuentae" id="cuentae" style="width:4em" value="<?=$factura->cuentae?>" />
+  <input type="text" name="cuentao" id="cuentao" style="width:4em" value="<?=$factura->cuentao?>" />
+  <input type="text" name="cuentadc" id="cuentadc" style="width:2em" value="<?=$factura->cuentadc?>" />
+  <input type="text" name="cuentan" id="cuentan" style="width:12em" value="<?=$factura->cuentan?>" />
 </p>
 
 <input type="hidden" name="id" value="<?=$factura->id?>" />
@@ -76,10 +100,12 @@
   <input type="button" value="Limpiar" class="button" onClick="javascript:resetForm();"/>
 </p>
 
+</div> 
+<div id="total" style="width:20%; float:right; margin-top:20%"></div>
+
 </fieldset>
 </form> 
 
-<div id="total"></div>
 </div>
 
 
@@ -155,7 +181,12 @@ function formateaNumero (original) {
 	return result;
 }
 
-$('.factura').change(calculaFactura);
+$('input[name="totalPintura"]').change(calculaFactura);
+$('input[name="totalMecanica"]').change(calculaFactura);
+$('input[name="descuentoPintura"]').change(calculaFactura);
+$('input[name="descuentoMecanica"]').change(calculaFactura);
+$('input[name="franquicia"]').change(calculaFactura);
+
 calculaFactura ();
 </script>
 <?php

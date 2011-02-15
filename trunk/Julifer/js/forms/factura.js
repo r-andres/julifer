@@ -37,19 +37,36 @@ $(document).ready(function(){
 	onkeyup: true,
 			rules: {
 				pagado : $numberRule,
+				numero :$numberRule,
 				franquicia : $numberRule,
 				totalMecanica :$numberRule,
 				descuentoMecanica :$numberRule,
 				totalPintura :$numberRule,
-				descuentoPintura :$numberRule
+				descuentoPintura :$numberRule,
+				cuentae: {
+					regex: /^\d{4}$/
+				},
+				cuentao: {
+					regex: /^\d{4}$/
+				},
+				cuentadc: {
+					regex: /^\d{2}$/
+				},
+				cuentan: {
+					regex: /^\d{10}$/
+				}
 			},
 			messages: {
 				pagado: $regexMsg,
+				numero: $regexMsg,
 				franquicia: $regexMsg,
 				totalMecanica:$regexMsg,
 				totalPintura:$regexMsg,
 				descuentoMecanica:$regexMsg,
-				descuentoPintura:$regexMsg
+				cuentae: $regexMsg,
+				cuentao: $regexMsg,
+				cuentadc: $regexMsg,
+				cuentan: $regexMsg
 			},
 			debug:true
 	});
