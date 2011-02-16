@@ -86,7 +86,7 @@ class PDF extends TablaCompPDF
 		$lineas = explode("\n", $texto);
 		
 		foreach ($lineas as $linea ) {
-			$numfilas = ceil(strlen($linea) / $MAX_CARACTERES_LINEA);
+			$numfilas = ceil((strlen($linea) + 1) / $MAX_CARACTERES_LINEA);
 			$nFilasTeoricas += $numfilas;
 		}
 		
@@ -249,15 +249,6 @@ class PDF extends TablaCompPDF
 			
 			$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $ancho);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-			
 		
 		return $yFinal; 
 	}
