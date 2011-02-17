@@ -6,13 +6,13 @@ class TablaCompPDF extends FPDF
 {
 
 		
-	function tablaGruposEtiquetaDato ( $arrayDatos, $x, $y, $ancho) {
+	function tablaGruposEtiquetaDato ( $arrayDatos, $x, $y, $ancho, $tamannoLetra) {
 		
 		$this->SetY($y);
 		
 		$contador = 0;		
 		foreach ( $arrayDatos as $datosGrupo ) {
-			$this -> _grupoEtiquetaDato ($x, $ancho, $datosGrupo, $contador == 0);
+			$this -> _grupoEtiquetaDato ($x, $ancho, $datosGrupo, $tamannoLetra, $contador == 0);
 			$contador ++;			
 		}
 		
@@ -23,7 +23,7 @@ class TablaCompPDF extends FPDF
 		return $this->GetY();
 	}
 
-	function _grupoEtiquetaDato ($x, $ancho, $arrayCampos , $primero = false) {
+	function _grupoEtiquetaDato ($x, $ancho, $arrayCampos , $tamannoLetra, $primero = false) {
 		
 		$altura = 6; // Expresado en mm
 		$anchosCalculados = array();
@@ -31,7 +31,7 @@ class TablaCompPDF extends FPDF
 		
 		$anchoLinea = 0;
 		foreach ($arrayCampos as $etiqueta => $valor) {
-			$this->SetFont('Arial','B',8);
+			$this->SetFont('Arial','B', $tamannoLetra);
 			$anchoLinea += max ($this->_dameAncho($valor) , $this->_dameAncho($etiqueta));
 		}
 		
@@ -42,7 +42,7 @@ class TablaCompPDF extends FPDF
 		$contador = 0;
 		foreach ($arrayCampos as $etiqueta => $valor ) {
 			$this->SetTextColor(0);
-			$this->SetFont('Arial','B',8);
+			$this->SetFont('Arial','B', $tamannoLetra);
 			$miAncho =  $proporcion * max ($this->_dameAncho($valor) , $this->_dameAncho($etiqueta));
 			$anchosCalculados[$etiqueta] = $miAncho;
 			
@@ -67,13 +67,21 @@ class TablaCompPDF extends FPDF
 	}
 
 
-	function tablaEtiquetaDato ( $arrayDatos , $x , $y, $ancho, $alto = 0, $alineado = 'L')
+	function tablaEtiquetaDato ( $arrayDatos , $x , $y, $ancho, $tamannoLetra, $alto = 0, $alineado = 'L')
 	{
 		$this->SetY($y);
 		$longitudes = array ();
+		
+		$this->SetFont('Arial','B', $tamannoLetra);
+		$maxAnchoEtiqueta = 0;
+		foreach ($arrayDatos as $etiqueta => $dato) {
+			$maxAnchoEtiqueta = max($this->GetStringWidth($etiqueta), $maxAnchoEtiqueta);	
+			
+		}
+		
 		foreach ($arrayDatos as $etiqueta => $dato) {
 			$this->_lineaEtiquetaDato($x, $longitudes, $ancho, 
-						  $etiqueta,  $dato, $alineado);	
+						  $etiqueta,  $dato, $alineado, $tamannoLetra, $maxAnchoEtiqueta);	
 			
 		}
 		
@@ -90,23 +98,24 @@ class TablaCompPDF extends FPDF
 	}
 
 
-	function _lineaEtiquetaDato ($x, &$longitudes, $ancho,  $etiqueta, $dato, $alineado) {
+	function _lineaEtiquetaDato ($x, &$longitudes, $ancho,  $etiqueta, $dato, $alineado, $tamannoLetra, $maxAnchoEtiqueta) {
 		
 		$altura = 6; 
 		$interlineado = 5;
-		$anchoEtiqueta = 27;
+		$anchoEtiqueta = $maxAnchoEtiqueta;
 		$anchoDatos = $ancho - $anchoEtiqueta;
 		if ($alineado == 'R') {
 			$anchoDatos = 16;
 		}
 		
-		$this->SetX($x + 1);
+		$this->SetX($x + 4);
 		$this->SetTextColor(0);
-		$this->SetFont('Arial','B',8);
+		$this->SetFont('Arial','B', $tamannoLetra);
 		$this->Cell($anchoEtiqueta, $altura, utf8_decode($etiqueta),0,0,'R');
 		$this->SetTextColor(127, 127, 127);
-		$this->SetFont('Arial','',8);
-		$this->Cell( $anchoDatos, $altura , utf8_decode($dato) , 0, 0, $alineado);
+		$this->SetFont('Arial','', $tamannoLetra);
+		$this->Cell( $anchoDatos, $altura ,$dato , 0, 0, $alineado);
+		
 		array_push($longitudes, ($this->_dameAncho($dato) + $anchoEtiqueta));
 		$this->Ln($interlineado);
 		
@@ -114,30 +123,35 @@ class TablaCompPDF extends FPDF
 
 	
 	
-	function tablaFilas ( $arrayDatos , $arrayCabeceras , $totalTitulo, $total, $muestraTotal, $x , $y)
+	function tablaFilas ( $arrayDatos , $arrayCabeceras , $totalTitulo, $total, $muestraTotal, $x , $y, $tamannoLetra)
 	{
 		$this->SetY($y);
 	
 		$contador = 0;
 		$altura = 6;
 		
-		$this->_filaCabecera ($x, $arrayCabeceras);
+		$this->_filaCabecera ($x, $arrayCabeceras, $tamannoLetra);
 		
 		foreach ($arrayDatos as $fila) {
 			//$this->_filaDato($x, $fila, $arrayCabeceras, $contador == 0, $contador);	
-			$this->_filaDato($x, $fila, $arrayCabeceras, $contador);	
+			$this->_filaDato($x, $fila, $arrayCabeceras, $contador, $tamannoLetra);	
 			$contador = $contador + 1;
 		}
 		$alturaRect = $this->GetY() - $y;
 		$anchoRect = array_sum($arrayCabeceras) ;
-		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 , '' , '124');
+		$angulos = "124";
+		if (! $muestraTotal) {
+			$angulos = "1234";
+		}
+		
+		$this->RoundedRect($x, $y, $anchoRect, $alturaRect, 4 , '' , $angulos);
 		
 		if ($muestraTotal) {
 			$this->SetX($x);
 			$this->SetTextColor(0, 0, 0);
-			$this->SetFont('Arial','B', 8);
+			$this->SetFont('Arial','B', $tamannoLetra);
 			$this->Cell ($anchoRect - 30 , $altura , utf8_decode($totalTitulo), 0 , 0 , 'R');
-			$this->SetFont('Arial','', 8);
+			$this->SetFont('Arial','', $tamannoLetra);
 			$this->Cell (30 , $altura , utf8_decode($total), 'LRTB' , 0 , 'R');
 			$this->ln($altura);
 		} else {
@@ -149,7 +163,7 @@ class TablaCompPDF extends FPDF
 	}
 	
 	
-	function _filaCabecera ($x, $cabeceras) {
+	function _filaCabecera ($x, $cabeceras, $tamannoLetra) {
 		
 		$altura = 6; // Expresado en mm
 		$borde = 'B';
@@ -158,7 +172,7 @@ class TablaCompPDF extends FPDF
 		$contador = 0;
 		foreach ($cabeceras as $etiqueta => $ancho) {
 			$this->SetTextColor(0, 0, 0);
-			$this->SetFont('Arial','B',8);
+			$this->SetFont('Arial','B', $tamannoLetra);
 			$this->Cell($ancho, $altura, $etiqueta, ($contador > 0 ? "L${borde}" : $borde) , 0,'C');
 			$contador ++;
 		}
@@ -167,7 +181,7 @@ class TablaCompPDF extends FPDF
 	
 	
 	
-	function _filaDato ($x, $fila, $anchos, $contadorLinea) {
+	function _filaDato ($x, $fila, $anchos, $contadorLinea, $tamannoLetra) {
 		
 		$altura = 6; // Expresado en mm
 		$borde = '';
@@ -178,7 +192,7 @@ class TablaCompPDF extends FPDF
 			
 			$this->SetTextColor(127, 127, 127);
 			$this->SetFillColor(177, 177, 177);
-			$this->SetFont('Arial','',8);
+			$this->SetFont('Arial','', $tamannoLetra);
 			$miAncho = $anchos[$etiqueta];
 			$this->Cell($miAncho, $altura, utf8_decode($valor), ($contador > 0 ? "${borde}" : $borde) , 0,'C', ($contadorLinea % 2 == 0 ? "F" : "") );
 			$contador ++;
@@ -188,7 +202,7 @@ class TablaCompPDF extends FPDF
 	}
 	
 	
-	function tablaFilasGrupo ( $titulo, $descripcion, $totales  , $x , $y , $ancho)
+	function tablaFilasGrupo ( $titulo, $descripcion, $totales  , $x , $y , $ancho, $tamannoLetra)
 	{
 		$this->SetY($y);
 
@@ -197,11 +211,11 @@ class TablaCompPDF extends FPDF
 
 		$this->SetX($x + 3);
 		$this->SetTextColor(0, 0, 0);
-		$this->SetFont('Arial','B', 8);
+		$this->SetFont('Arial','B', $tamannoLetra);
 		$this->Cell ($ancho , $altura , utf8_decode($titulo));
 		$this->ln($altura);
 
-		$this->SetFont('Arial','', 8);
+		$this->SetFont('Arial','', $tamannoLetra);
 		$this->SetTextColor(127, 127, 127);
 		$this->SetX($x + 2);
 		$this->MultiCell ($ancho - 4, $altura , utf8_decode($descripcion));
@@ -216,9 +230,9 @@ class TablaCompPDF extends FPDF
 		
 			$this->SetX($x);
 			$this->SetTextColor(0, 0, 0);
-			$this->SetFont('Arial','B', 8);
+			$this->SetFont('Arial','B', $tamannoLetra);
 			$this->Cell ($ancho - 30 , $altura , utf8_decode($totalTitulo), 0 , 0 , 'R');
-			$this->SetFont('Arial','', 8);
+			$this->SetFont('Arial','', $tamannoLetra);
 			$this->Cell (30 , $altura , utf8_decode($total), 'LRTB' , 0 , 'R');
 			$this->ln($altura);
 		}
@@ -255,11 +269,11 @@ class TablaCompPDF extends FPDF
         }
 
 
-        function  tablaVacia ($titulo, $x , $y, $ancho, $altura )
+        function  tablaVacia ($titulo, $x , $y, $ancho, $altura, $tamannoLetra )
 	   {
 		
 
-		$this->SetFont('Arial','B', 4);
+		$this->SetFont('Arial','B', $tamannoLetra);
 		$this->SetY($y);
 		$this->SetX($x + 1);	
 		$this->Cell ($ancho , 4 , utf8_decode($titulo));
