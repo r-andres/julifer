@@ -2,6 +2,8 @@
 
 
 define('FPDF_FONTPATH',"$ROOT/lib/common/font/");
+define ('EURO', chr(128) );
+
 require_once("$ROOT/lib/common/fpdf.php");
 require_once("$ROOT/lib/common/TablaCompPDF.php");
 
@@ -34,10 +36,11 @@ class PDF extends TablaCompPDF
 	{
 		
 		
-		$ancho = 93;  // mm 
+		$ancho = 95;  // mm 
+		$tamannoLetra = 10;
 		$y = $this->GetY();
-		$yFactura = $this->detalleFactura($this->anclaje_1 -($ancho / 2) , $y , $ancho);
-		$yCliente = $this->detalleCliente($this->anclaje_2 -($ancho / 2) , $y + 6, $ancho);
+		$yFactura = $this->detalleFactura($this->anclaje_1 -($ancho / 2) , $y , $ancho -3, $tamannoLetra);
+		$yCliente = $this->detalleCliente($this->anclaje_2 -($ancho / 2) , $y + 6, $ancho -3, $tamannoLetra);
 
 		
 		$this->SetY(max($yFactura, $yCliente));
@@ -55,7 +58,7 @@ class PDF extends TablaCompPDF
 		}
 		$er = $this->precalculaEspacioTabla ($this->factura-> mecanica, $totalesMecanica, 6);
 		$this->tablaFilasGrupo( "Chapa",  $this->factura-> mecanica , 
-								$totalesMecanica , 10, $this->GetY(), $ancho * 2 );
+								$totalesMecanica , 10, $this->GetY(), $ancho * 2, $tamannoLetra);
 		
 		$this->recalculadoMecanica	= $totalMecanica;					
 								
@@ -71,7 +74,7 @@ class PDF extends TablaCompPDF
 		$this->recalculadoPintura = $totalPintura;
 		$er = $this->precalculaEspacioTabla ($this->factura-> pintura, $totalesPintura, 6);
 		$this->tablaFilasGrupo( "Pintura",  $this->factura-> pintura, 
-								$totalesPintura , 10, $this->GetY(), $ancho * 2 );
+								$totalesPintura , 10, $this->GetY(), $ancho * 2, $tamannoLetra );
 		
 			
 		$this->final = true;		
@@ -103,7 +106,7 @@ class PDF extends TablaCompPDF
 	
 	
 	
-	function totales ($x , $y, $ancho, $alto)
+	function totales ($x , $y, $ancho, $alto, $tamannoLetra)
 	{
 		
 		
@@ -119,36 +122,42 @@ class PDF extends TablaCompPDF
 		
 		
 		$datos = array (
-				'MANO DE OBRA' => number_format($manoDeObra, 2) ,
-				'MATERIALES'=>   number_format( $materiales, 2) ,
-				'SUBTOTAL'=> number_format($subtotal, 2), 
-				"I.V.A. ($tipoImpositivo %) " =>  number_format($iva, 2));
+				'MANO DE OBRA' =>  $this->formatoMoneda($manoDeObra) ,
+				'MATERIALES'=>   $this->formatoMoneda( $materiales) ,
+				'SUBTOTAL'=> $this->formatoMoneda($subtotal), 
+				"I.V.A. ($tipoImpositivo %) " =>  $this->formatoMoneda($iva));
 		
 		$totalFactura = $total;
 	
 		if ($franquicia != 0) {
-			$datos['TOTAL']	= number_format($total, 2);
+			$datos['TOTAL']	= $this->formatoMoneda($total);
 			$datos['  ']	= " ";
-			$datos['FRANQUICIA']	= number_format($franquicia, 2);
+			$datos['FRANQUICIA']	= $this->formatoMoneda($franquicia);
 			
 			$totalFactura = $total - $franquicia;
 			if ($totalFactura <= 0) {
 				$totalFactura = 0;
 			}
 		} else {
+			$datos=array_merge(array("  "=>" "), $datos); 
 			$datos['  ']	= " ";
 		} 
 		
-		$datos['TOTAL FACTURA']	= number_format($totalFactura , 2);
+		$datos['TOTAL FACTURA']	= $this->formatoMoneda($totalFactura);
 		
 		$alineado = 'R';
 		
-		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho , $alto, $alineado);
+		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho , $tamannoLetra , $alto, $alineado);
+	}
+
+	
+	function formatoMoneda ($valor) {
+		
+		return number_format( $valor, 2) .  EURO;
 	}
 
 
-
-	function detalleFactura ($x, $y, $ancho) {
+	function detalleFactura ($x, $y, $ancho, $tamannoLetra) {
 		
 		$etiquetaNumero = 'Num. Factura';
 		
@@ -170,38 +179,39 @@ class PDF extends TablaCompPDF
 				      'Num. bastidor' => $this->factura->vehiculo->numerobastidor 
 				     ));
 		
-		return $this->tablaGruposEtiquetaDato($datos, $x, $y, $ancho);
+		return $this->tablaGruposEtiquetaDato($datos, $x, $y, $ancho, $tamannoLetra);
 	}
 
 
-	function detalleCliente($x , $y, $ancho)
+	function detalleCliente($x , $y, $ancho, $tamannoLetra)
 	{
-		
+	
 		
 		$cliente = $this->factura->cliente;
 		
 		$datos = array (
-				'NOMBRE:' => $cliente -> nombre . ' ' . $cliente -> apellidos,
-				'DIRECCIÓN:'=>  $cliente -> direccion,
-				'POBLACIÓN:'=>  $cliente -> localidad . ' ' . $cliente-> provincia ,
-				'TELÉFONO:'=>  $cliente -> telefono,
-				'C. ELECTRÓNICO:'=>  $cliente -> correoelectronico);
+				'NOMBRE:' => utf8_decode($cliente -> nombre . ' ' . $cliente -> apellidos),
+				'DIRECCIÓN:'=>  utf8_decode($cliente -> direccion),
+				'POBLACIÓN:'=>  utf8_decode($cliente -> localidad . ' ' . $cliente-> provincia),
+				'TELÉFONO:'=>  utf8_decode($cliente -> telefono),
+				'C. ELECTRÓNICO:'=>  utf8_decode($cliente -> correoelectronico));
 		
-		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho);
+		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho, $tamannoLetra);
 	}
 
 
 	function detalleMateriales ($x, $y, $data) {
 		
 		$cabecera = array(utf8_decode('Cantidad') => 25,
-						  utf8_decode('Descripción') => 85,
-					      utf8_decode('Precio por Unidad') => 30,
+						  utf8_decode('Descripción') => 80,
+					      utf8_decode('Precio por Unidad') => 40,
 					      utf8_decode('Descuento') => 20,
 						  utf8_decode('Precio')  => 25);
 		
 		$subtotal = 0;
 		$datos = array();
 		$maxFilasPorPagina = 24;
+		$tamannoLetra = 10;
 		$contador = 0;
 		$contadorTotal = 0;
 		$totalDatos = count ($data);
@@ -225,7 +235,7 @@ class PDF extends TablaCompPDF
 			
 			if ($contador == $maxFilasPorPagina ) {
 				$muestraTotal = false;
-				$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $ancho);
+				$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $tamannoLetra);
 				$y = $this->finCabecera;
 				$datos = array();
 				$contador = 0;
@@ -247,7 +257,7 @@ class PDF extends TablaCompPDF
 	    		 array_push($datos, $fila);
 			}
 			
-			$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $ancho);
+			$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $tamannoLetra);
 		}
 		
 		return $yFinal; 
@@ -258,7 +268,7 @@ class PDF extends TablaCompPDF
 	
 	function  Header ( )
 	{
-		$tamannoFuente = 7;
+		$tamannoFuente = 10;
 		$anchoImagen = 70;
 		//Logo
 		$this->Image('images/logo.jpg',  $this->anclaje_1 -($anchoImagen / 2) , 10 , $anchoImagen);
@@ -267,7 +277,7 @@ class PDF extends TablaCompPDF
 		
 		$lineaLogo1 = $empresa->poblacion . ' - ' . $empresa->direccion . ' - ' . $empresa->codpostal . ' ' .  $empresa->provincia;
 		$lineaLogo2 = 'Teléfono ' . $empresa->telefono  . ' - Fax ' . $empresa->fax ;
-		
+		$this->SetTextColor(0, 0, 0);
 		$this->SetFont('Arial','', $tamannoFuente );
 		$xLineaPromo = $this->anclaje_2 ;
 		$promos = array ('BANCADA DE CARROCERÍA' , 'CABINA DE PINTADO' , 'MECÁNICA RÁPIDA'  );
@@ -277,7 +287,7 @@ class PDF extends TablaCompPDF
 			$this->Ln($tamannoFuente / 2);
 		}
 		
-		$this->SetFont('Arial','BI', $tamannoFuente + 2);
+		$this->SetFont('Arial','BI', $tamannoFuente);
 		$maxLongitudes = max($this->_dameAncho($lineaLogo1), $this->_dameAncho($lineaLogo2));
 		$xLineaLogo = (($this->anchoPagina / 4) * 3) - ($maxLongitudes / 2);
 		
@@ -297,6 +307,8 @@ class PDF extends TablaCompPDF
 	//Pie de página
 	function Footer()
 	{
+		$this->SetTextColor(0, 0, 0);
+		$tamannoLetra = 6;
 		//Posición: a margenPie del final
 		$this->SetY(-1 * $this->margenPie);
 
@@ -304,7 +316,7 @@ class PDF extends TablaCompPDF
 		$anchoCondiciones = 65;
 		$anchoConforme = 35;
 		$anchoFirma = 35;
-		$anchoTotales = 45;
+		$anchoTotales = 47;
 		$separador = 3;
 		$xCondiciones = $this->margenX ;
 
@@ -312,8 +324,9 @@ class PDF extends TablaCompPDF
 		$anchoDomiciliacion = $anchoFirma + $separador + $anchoConforme;
 		
 		if (!$this->final) {
-			$anchoConforme = 57;
-			$anchoFirma = 57;
+			
+			$anchoConforme = 59;
+			$anchoFirma = 59;
 		}
 		
 		
@@ -327,9 +340,9 @@ class PDF extends TablaCompPDF
 			$altoMovil = $altoMovil - $altoDomiciliacion - 2;
 			$yDomiciliacion = $yPie + $altoMovil + 2;
 		}
-		$this->tablaVacia('Conforme: EL CLIENTE', $xConforme  , $yPie, $anchoConforme, $altoMovil);
+		$this->tablaVacia('Conforme: EL CLIENTE', $xConforme  , $yPie, $anchoConforme, $altoMovil, $tamannoLetra );
 		$xFirma = $xConforme + $anchoConforme + $separador;
-		$this->tablaVacia('Firma y Sello de la empresa',  $xFirma, $yPie, $anchoFirma, $altoMovil);
+		$this->tablaVacia('Firma y Sello de la empresa',  $xFirma, $yPie, $anchoFirma, $altoMovil, $tamannoLetra);
 		
 		$xTotales = $xFirma + $anchoFirma + $separador;
 		//$this->tablaVacia('TOTALES',  $xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
@@ -340,7 +353,8 @@ class PDF extends TablaCompPDF
 								$xConforme  , $yDomiciliacion, 
 								$anchoDomiciliacion, $altoDomiciliacion);
 			}
-			$this->totales($xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie);
+			$tamannoLetra = 8;
+			$this->totales($xTotales, $yPie, $anchoTotales, $yCondiciones - $yPie, $tamannoLetra);
 		} 
 		$textoPie = file("lib/common/pie.txt");
 		$pie = "";
