@@ -38,10 +38,12 @@ class PDF extends TablaCompPDF
 		
 		$ancho = 95;  // mm 
 		$tamannoLetra = 10;
+		
+		$this->ln(4);
 		$y = $this->GetY();
-		$yFactura = $this->detalleFactura($this->anclaje_1 -($ancho / 2) , $y , $ancho -3, $tamannoLetra);
-		$yCliente = $this->detalleCliente($this->anclaje_2 -($ancho / 2) , $y + 6, $ancho -3, $tamannoLetra);
-
+		$yCliente = $this->detalleCliente($this->anclaje_2 -($ancho / 2) , $y , $ancho -3, $tamannoLetra);
+		$yFactura = $this->detalleFactura($this->anclaje_1 -($ancho / 2) , $yCliente - 6 * 6 , $ancho -3, $tamannoLetra);
+		
 		
 		$this->SetY(max($yFactura, $yCliente));
 		$this->ln(5);
@@ -190,11 +192,11 @@ class PDF extends TablaCompPDF
 		$cliente = $this->factura->cliente;
 		
 		$datos = array (
-				'NOMBRE:' => utf8_decode($cliente -> nombre . ' ' . $cliente -> apellidos),
-				'DIRECCIÓN:'=>  utf8_decode($cliente -> direccion),
-				'POBLACIÓN:'=>  utf8_decode($cliente -> localidad . ' ' . $cliente-> provincia),
-				'TELÉFONO:'=>  utf8_decode($cliente -> telefono),
-				'C. ELECTRÓNICO:'=>  utf8_decode($cliente -> correoelectronico));
+				'Nombre:' => utf8_decode($cliente -> nombre . ' ' . $cliente -> apellidos),
+				'Dirección:'=>  utf8_decode($cliente -> direccion),
+				'Población:'=>  utf8_decode($cliente -> localidad . ' ' . $cliente-> provincia),
+				'Teléfono:'=>  utf8_decode($cliente -> telefono),
+				'Email:'=>  utf8_decode($cliente -> correoelectronico));
 		
 		return $this->tablaEtiquetaDato($datos, $x, $y, $ancho, $tamannoLetra);
 	}
@@ -210,7 +212,9 @@ class PDF extends TablaCompPDF
 		
 		$subtotal = 0;
 		$datos = array();
-		$maxFilasPorPagina = 24;
+		$espacioDisponible = $this->altoPagina - $this->margenPie - $y;
+		
+		$maxFilasPorPagina = ceil($espacioDisponible / 7);
 		$tamannoLetra = 10;
 		$contador = 0;
 		$contadorTotal = 0;
@@ -239,7 +243,7 @@ class PDF extends TablaCompPDF
 				$y = $this->finCabecera;
 				$datos = array();
 				$contador = 0;
-				$maxFilasPorPagina = 32;
+				$maxFilasPorPagina = $maxFilasPorPagina + 8;
 			}
 			
 		}
