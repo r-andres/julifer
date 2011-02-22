@@ -20,7 +20,7 @@
 </p>
 <p>
   <label for="apellidos">Apellidos</label>
-  <input type="text" name="apellidos" value="<?=$cliente->apellidos?>" class="required" />
+  <input type="text" name="apellidos" value="<?=$cliente->apellidos?>" />
 </p>
 <p><label for="direccion">Direcci&oacute;n</label> <input type="text" name="direccion" value="<?=$cliente->direccion?>" /></p>
 <p>
@@ -35,7 +35,7 @@
 </p>
 <p>
   <label for="telefono">Tel&eacute;fono</label> 
-  <input type="text" name="telefono" value="<?=$cliente->telefono?>"  class="required" />
+  <input type="text" name="telefono" value="<?=$cliente->telefono?>"  />
 </p>
 <p>
   <label for="correoelectronico">Email</label> 
