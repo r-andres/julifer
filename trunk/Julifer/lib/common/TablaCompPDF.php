@@ -106,18 +106,25 @@ class TablaCompPDF extends FPDF
 		$anchoDatos = $ancho - $anchoEtiqueta;
 		if ($alineado == 'R') {
 			$anchoDatos = 16;
+			$this->SetX($x + 5);
+		} else {
+			$this->SetX($x + 2);
 		}
 		
-		$this->SetX($x + 4);
+		
 		$this->SetTextColor(0);
 		$this->SetFont('Arial','B', $tamannoLetra);
 		$this->Cell($anchoEtiqueta, $altura, utf8_decode($etiqueta),0,0,'R');
 		$this->SetTextColor(127, 127, 127);
 		$this->SetFont('Arial','', $tamannoLetra);
-		$this->Cell( $anchoDatos, $altura ,$dato , 0, 0, $alineado);
-		
+		if ($this->GetStringWidth($dato) > $anchoDatos ) {
+			$this->MultiCell( $anchoDatos, $altura ,$dato , 0, $alineado , 0);
+		} else {
+			$this->Cell( $anchoDatos, $altura ,$dato , 0, 0, $alineado);
+			$this->Ln($interlineado);
+		}
 		array_push($longitudes, ($this->_dameAncho($dato) + $anchoEtiqueta));
-		$this->Ln($interlineado);
+		
 		
 	}
 
