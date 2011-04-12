@@ -29,7 +29,7 @@ function sendForm(action, cmd, id) {
 
 	$.post(url, $("#myForm").serialize(), function(data) {
 		$('#content').html(data);
-	});
+	}, "html");
 	
 	stopCursor();
 }

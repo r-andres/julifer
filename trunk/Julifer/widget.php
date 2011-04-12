@@ -1,5 +1,6 @@
 <?php
 
+header("Content-type: text/xml");
 /*** begin session ***/
 session_save_path("session_tmp" ); 
 session_start();
