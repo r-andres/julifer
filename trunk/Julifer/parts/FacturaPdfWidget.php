@@ -19,8 +19,7 @@ class PDF extends TablaCompPDF
 	protected $anclaje_1, $anclaje_2;
 	protected $final = false;
 	protected $totalMateriales = 0;
-
-	
+	protected $minFilasMateriales = 0;
 	
 	
 	
@@ -58,9 +57,8 @@ class PDF extends TablaCompPDF
 			$totalMecanica =  $this->factura->totalMecanica - (( $this->factura->totalMecanica * $this->factura->descuentoMecanica) / 100); 
 			$totalesMecanica["Total Chapa"] = number_format( $totalMecanica , 2);
 		}
-		$er = $this->precalculaEspacioTabla ($this->factura-> mecanica, $totalesMecanica, 6);
-		$this->tablaFilasGrupo( "Chapa",  $this->factura-> mecanica , 
-								$totalesMecanica , 10, $this->GetY(), $ancho * 2, $tamannoLetra);
+		$er = $this->precalculaEspacioTabla ("Chapa", $this->factura-> mecanica, $totalesMecanica, 6, $ancho);
+		
 		
 		$this->recalculadoMecanica	= $totalMecanica;					
 								
@@ -74,9 +72,8 @@ class PDF extends TablaCompPDF
 			$totalesPintura["Total pintura"] = number_format( $totalPintura , 2);
 		}
 		$this->recalculadoPintura = $totalPintura;
-		$er = $this->precalculaEspacioTabla ($this->factura-> pintura, $totalesPintura, 6);
-		$this->tablaFilasGrupo( "Pintura",  $this->factura-> pintura, 
-								$totalesPintura , 10, $this->GetY(), $ancho * 2, $tamannoLetra );
+		$er = $this->precalculaEspacioTabla ("Pintura", $this->factura-> pintura, $totalesPintura, 6 , $ancho);
+
 		
 			
 		$this->final = true;		
@@ -84,28 +81,55 @@ class PDF extends TablaCompPDF
 	}
 
 	
-	function  precalculaEspacioTabla ($texto, $array, $altura) {
-		$nFilasTeoricas = 3;  //
+	function  precalculaEspacioTabla ($titulo, $texto, $array, $altura, $ancho) {
+		$nFilasTeoricas = 5;  //
 		$MAX_CARACTERES_LINEA = 114;
+
+		if (strlen($texto) == 0 ) {
+			$texto = " ";
+		}
 		
 		$lineas = explode("\n", $texto);
+		$lineasAlmacenadas = "";
+		$primeraTabla = true;
 		
 		foreach ($lineas as $linea ) {
-			$numfilas = ceil((strlen($linea) + 1) / $MAX_CARACTERES_LINEA);
-			$nFilasTeoricas += $numfilas;
+			if (strlen($linea) > 0 ) {
+				$numfilas = ceil((strlen($linea) + 1) / $MAX_CARACTERES_LINEA);
+				$nFilasTeoricas += $numfilas;
+				$espacioRequerido =  $nFilasTeoricas * $altura;
+				if ($this->GetY() + $espacioRequerido >=   ($this->altoPagina - ( $this->margenPie)) ) {
+					$tituloTabla = "";
+
+					if ($primeraTabla) {
+						$tituloTabla = $titulo;
+					}
+					if (strlen($lineasAlmacenadas) > 0) {
+					$this->tablaFilasGrupo( $tituloTabla,  $lineasAlmacenadas ,  array() , 10, $this->GetY(), $ancho * 2, $tamannoLetra);
+					$primeraTabla = false;
+					}
+					$this->AddPage();
+					$lineasAlmacenadas = $linea . "\n";
+					$nFilasTeoricas = $numfilas;
+					
+				} else {
+					$lineasAlmacenadas .= $linea . "\n";
+				}
+			}
 		}
-		
-		$nFilasTeoricas +=  count($array);
-		
-		$espacioRequerido =  $nFilasTeoricas * $altura;
-		
-		if ($this->GetY() + $espacioRequerido >=   ($this->altoPagina - ( $this->margenPie)) ) {
-			$this->AddPage();
+
+		if ($lineasAlmacenadas != "") {
+			$tituloTabla = "";
+			if ($primeraTabla) {
+				$tituloTabla = $titulo;
+			}
+			$this->tablaFilasGrupo( $tituloTabla,  $lineasAlmacenadas ,
+			$array , 10, $this->GetY(), $ancho * 2, $tamannoLetra);
 		}
-		
+
 		return $nFilasTeoricas;
 	}
-	
+
 	
 	
 	function totales ($x , $y, $ancho, $alto, $tamannoLetra)
@@ -256,12 +280,18 @@ class PDF extends TablaCompPDF
 	    		 array_push($datos, $fila);
 			}
 			
-			for ($i = count($datos) ; $i <= 6; $i++) {
+			for ($i = count($datos) ; $i <= $this->minFilasMateriales; $i++) {
 	    		 $fila = array ();
 	    		 array_push($datos, $fila);
 			}
 			
-			$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $tamannoLetra);
+			if (count($datos) > 0) {
+			
+				$yFinal = $this->tablaFilas($datos, $cabecera, "TOTAL MATERIALES", number_format($this->totalMateriales, 2), $muestraTotal , $x, $y, $tamannoLetra);
+			
+			} else {
+				$yFinal = $this->GetY();
+			}
 		}
 		
 		return $yFinal; 
