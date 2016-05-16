@@ -114,7 +114,7 @@ function updateNumero(value){
 
 
 function calculaFactura () {
-	porcentajeIva = 18;
+	porcentajeIva = <?=constant("IVA")?>;
 	totalPintura = $('input[name="totalPintura"]').val();
 	totalChapa = $('input[name="totalMecanica"]').val();
 	descuentoPintura = $('input[name="descuentoPintura"]').val();

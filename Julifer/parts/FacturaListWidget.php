@@ -48,6 +48,7 @@ if ("<?=$controller->printfactura?>") {
 <?php  
     $counter = 0;
     foreach ( $controller->list as $factura)  {
+    	$tm = time() . $counter;
     	$pagado = "-";
     	$estado = "-";
     	$tipo_ab ="PREP";
@@ -75,11 +76,7 @@ if ("<?=$controller->printfactura?>") {
 		   <td><?=$factura->fecha?></td>
 		   <td><?=$factura->matricula?></td>
 		   <td>
-			<img class="verVehiculo" id="verVehiculo_<?=$counter?>" src="images/go-bottom.png" border="0" />
-			<img class="ocultarVehiculo" id="ocultarVehiculo_<?=$counter?>" src="images/go-top.png" border="0" />
-			<div class="vehiculoDetalles" id="vehiculoDetalles_<?=$counter?>">
-			</div>
-			<input type="hidden" id="vehiculo_<?=$counter?>" value="<?=$factura->vehiculo?>"/>
+		   <?=FormHelper::tableDataDOM("vehiculo", $factura->vehiculo, $tm)?>
            </td>
 		<td nowrap="yes"><?=FormHelper::euroFormat($factura->total())?></td>
 		<td nowrap="yes"><?=$pagado?></td>
@@ -96,48 +93,7 @@ if ("<?=$controller->printfactura?>") {
 ?>
 </tbody>
 </table> 
+
+<?=FormHelper::tableDataScript("vehiculo", "VehiculoView")?>
 </fieldset>
 
-<script>
-	$(document).ready(function(){
-
-		$(".ocultarVehiculo").hide();
-		$(".vehiculoDetalles").hide();
-		
-		$(".verVehiculo" ).click(function(){
-			var id = $(this).attr("id");
-			id = id.slice(id.indexOf("_") + 1);
-			$("#ocultarVehiculo_" + id ).show();
-			$("#verVehiculo_" + id).hide();
-			var vehiculo = $("#vehiculo_" + id).attr("value");
-
-			if ( $("#cliente_" + id).attr("loaded") != "yes" ) {
-				cargaVehiculo (id, vehiculo);
-				$("#vehiculo_" + id).attr("loaded", "yes");
-			} else {
-				$("#vehiculoDetalles_" + id).slideDown("slow");
-			}
-		});
-
-		$(".ocultarVehiculo").click(function(){
-			var id = $(this).attr("id");
-			id = id.slice(id.indexOf("_") + 1);
-			$("#ocultarVehiculo_" + id ).hide();
-			$("#verVehiculo_" + id).show();
-			$("#vehiculoDetalles_" + id).slideUp("slow");
-			
-			}
-		);
-
-		
-		
-	});
-
-	function cargaVehiculo (id, vehiculo) {
-		var url = "widget.php?action=VehiculoView&cmd=edit&id=" + vehiculo;
-		$.get(url, function(data) {
-			  $('#vehiculoDetalles_' + id ).html(data);
-			  $("#vehiculoDetalles_" + id).slideDown("slow");
-		});
-	}
-</script>

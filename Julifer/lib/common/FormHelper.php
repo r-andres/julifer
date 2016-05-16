@@ -149,7 +149,7 @@ class FormHelper {
 			var search = $("#<?=$name?>" + id).attr("value");
 			if ( $("#<?=$name?>" + id).attr("loaded") != "yes" ) {
 				carga<?=$name?> (id, search);
-				$("#<?=$name?>" + id).attr("loaded", "yes");
+				
 			} else {
 				$("#<?=$name?>"+ id + "Detalle" ).slideDown("slow");
 			}
@@ -174,10 +174,26 @@ class FormHelper {
 	function carga<?=$name?> (id, idBuscado) {
 
 		var url = "widget.php?action=<?=$widget?>&cmd=edit&id=" + idBuscado;
-		$.get(url, function(data) {
-			  $("#<?=$name?>"+ id + "Detalle" ).html(data);
-			  $("#<?=$name?>"+ id + "Detalle").slideDown("slow");
+
+		jQuery.ajax({
+			type: "GET",
+			url: url,
+			success: function(data) { 
+				$("#<?=$name?>"+ id + "Detalle" ).html(data);
+			  	$("#<?=$name?>"+ id + "Detalle").slideDown("slow");
+			  	$("#<?=$name?>" + id).attr("loaded", "yes");},
+			dataType: "html"
 		});
+		
+// 		$.get(url) {
+
+// 			url : url,
+			
+// 			success : function(data) {
+			  
+// 			},
+			
+// 		});
 	}
 	
 </script>

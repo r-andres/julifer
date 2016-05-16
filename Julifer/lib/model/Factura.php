@@ -8,7 +8,6 @@ class Factura {
 	const TIPO_PRESUPUESTO = "PRESUPUESTO";
 	const ESTADO_PAGADO = "PAGADO";
 	const ESTADO_PENDIENTE = "PENDIENTE";
-	const IVA = 18.0;
 	
 	function dump ($arr) {
 		$this->id = $arr['id'];
@@ -150,7 +149,7 @@ class Factura {
 		$total += $this->totalChapa();
 		$total += $this->totalPintura();
 
-		$total += ($total * self::IVA) / 100;
+		$total += ($total * constant("IVA")) / 100;
 		
 		$total -= $this->franquicia;
 		

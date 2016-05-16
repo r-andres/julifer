@@ -140,7 +140,7 @@ class PDF extends TablaCompPDF
 		$manoDeObra = $this->recalculadoPintura + $this->recalculadoMecanica  ;
 		$materiales = $this->totalMateriales;
 		$subtotal = $manoDeObra + $materiales;
-		$tipoImpositivo = 18;
+		$tipoImpositivo = constant("IVA");
 		$iva = ($subtotal * $tipoImpositivo) / 100;
 		
 		$franquicia = $this->factura->franquicia;

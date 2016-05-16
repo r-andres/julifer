@@ -1,5 +1,9 @@
 <?php
 
+ 
+ define("IVA", 21.0);
+ error_reporting(E_ALL);
+
  require_once("$ROOT/lib/common/TablaCompPDF.php"); 
  require_once("$ROOT/lib/common/fpdf.php"); 
  require_once("$ROOT/lib/common/FormHelper.php"); 
